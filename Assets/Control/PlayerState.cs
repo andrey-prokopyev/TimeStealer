@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using Zenject;
 
 namespace Control
@@ -14,6 +15,8 @@ namespace Control
             this.signalBus = signalBus;
             this.health = settings.Health;
         }
+
+        public Vector3 LookDirection { get; set; }
 
         public void TakeDamage(float damage)
         {

@@ -13,5 +13,9 @@ namespace Configuration
         public PlayerController.Settings PlayerControlSettings;
 
         public PlayerState.Settings PlayerStateSettings;
+
+        public Weapon.Weapon.Settings WeaponSettings;
+
+        public Weapon.WeaponCharger.Settings ChargeSettings;
     }
 }

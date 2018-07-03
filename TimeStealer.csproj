@@ -327,11 +327,15 @@
     <Compile Include="Assets\Scripts\DI\MainInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\PlayerInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\SettingsInstaller.cs" />
+    <Compile Include="Assets\Scripts\DI\WeaponInstaller.cs" />
     <Compile Include="Assets\Spawn\DefaultEnemyGenerator.cs" />
     <Compile Include="Assets\Spawn\IEnemyGenerator.cs" />
     <Compile Include="Assets\Spawn\SpawnManager.cs" />
     <Compile Include="Assets\Targeting\ITargetPicker.cs" />
     <Compile Include="Assets\Targeting\PlayerPicker.cs" />
+    <Compile Include="Assets\Weapon\Bullet.cs" />
+    <Compile Include="Assets\Weapon\Weapon.cs" />
+    <Compile Include="Assets\Weapon\WeaponCharger.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
