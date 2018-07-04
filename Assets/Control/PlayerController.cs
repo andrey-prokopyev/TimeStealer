@@ -28,8 +28,6 @@ namespace Control
 
             var moveSpeed = this.TransformInputToViewPort(input);
 
-            Debug.LogFormat("Set LookDirection = {0}", this.playerState.LookDirection);
-
             this.controller.SimpleMove(moveSpeed);
         }
 

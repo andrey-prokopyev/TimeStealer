@@ -37,11 +37,23 @@ namespace Weapon
             }
         }
 
+        private void OnTriggerExit(Collider other)
+        {
+            this.CheckLeftBoundaries(other);
+        }
+
+        private void CheckLeftBoundaries(Component other)
+        {
+            if (other.CompareTag("Boundary"))
+            {
+                Debug.LogFormat("{0} has left level boundary", this.gameObject.name);
+                this.pool.Despawn(this);
+            }
+        }
+
         private void FixedUpdate()
         {
             var deltaPosition = this.speed * this.direction.normalized;
-
-            Debug.LogFormat("{0} is moving from {1} to delta {2}", this.gameObject.name, this.transform.position, deltaPosition);
 
             this.transform.position += deltaPosition;
         }
