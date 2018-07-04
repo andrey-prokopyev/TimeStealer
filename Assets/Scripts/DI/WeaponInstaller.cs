@@ -21,9 +21,7 @@ namespace DI
                 .WithArguments(this.gameSettings.WeaponSettings, this.components.WeaponTransform);
 
             this.Container.BindInterfacesAndSelfTo<WeaponCharger>().FromMethod(s => new WeaponCharger(this.gameSettings.ChargeSettings)).AsSingle();
-
-            this.Container.BindMemoryPool<Bullet, Bullet.Pool>().WithInitialSize(10).FromComponentInNewPrefab(gameSettings.WeaponSettings.BulletPrefab).UnderTransformGroup("Bullets");
-
+            
             this.Container.BindFactory<float, float, Vector3, Vector3, Bullet, Bullet.Factory>()
                 .FromPoolableMemoryPool<Bullet, Bullet.Pool>(binder =>
                     binder.WithInitialSize(10).FromComponentInNewPrefab(gameSettings.WeaponSettings.BulletPrefab)

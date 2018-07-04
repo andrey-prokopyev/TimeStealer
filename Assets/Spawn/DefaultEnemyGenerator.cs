@@ -20,11 +20,11 @@ namespace Spawn
 
         private WaveConfiguration currentWave;
 
-        private readonly Pursuer.Pool pool;
+        private readonly Pursuer.Factory pursuerFactory;
 
-        public DefaultEnemyGenerator(Pursuer.Pool pool)
+        public DefaultEnemyGenerator(Pursuer.Factory pursuerFactory)
         {
-            this.pool = pool;
+            this.pursuerFactory = pursuerFactory;
         }
 
         public void SetCurrentWave(WaveConfiguration wave)
@@ -58,7 +58,7 @@ namespace Spawn
                 return;
             }
 
-            var enemy = this.pool.Spawn();
+            var enemy = this.pursuerFactory.Create();
 
             enemy.gameObject.name = "Enemy" + this.enemiesLeft;
 

@@ -1,10 +1,11 @@
 ﻿using System;
 using UnityEngine;
+using Weapon;
 using Zenject;
 
 namespace Control
 {
-    public class PlayerState
+    public class PlayerState : IDamageTaker
     {
         private readonly SignalBus signalBus;
 
@@ -18,12 +19,14 @@ namespace Control
 
         public Vector3 LookDirection { get; set; }
 
-        public void TakeDamage(float damage)
+        public float TakeDamage(float damage, string damagerReceiverName)
         {
             var healthBefore = this.health;
             this.health -= damage;
 
-            this.signalBus.Fire(new HealthChanged(healthBefore, this.health));
+            this.signalBus.Fire(new PlayerHealthChanged(healthBefore, this.health));
+
+            return 0f;
         }
 
         [Serializable]
@@ -32,9 +35,9 @@ namespace Control
             public float Health;
         }
 
-        public class HealthChanged
+        public class PlayerHealthChanged
         {
-            public HealthChanged(float healthBefore, float healthAfter)
+            public PlayerHealthChanged(float healthBefore, float healthAfter)
             {
                 HealthBefore = healthBefore;
                 HealthAfter = healthAfter;

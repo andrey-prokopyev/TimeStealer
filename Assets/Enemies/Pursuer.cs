@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Enemies
 {
-    public class Pursuer : MonoBehaviour
+    public class Pursuer : MonoBehaviour, IPoolable<IMemoryPool>
     {
         private const float NavThrottlingIntervalSeconds = 1f;
 
@@ -15,11 +15,30 @@ namespace Enemies
 
         private NavMeshAgent navMeshAgent;
 
+        private IMemoryPool pool;
+
         [Inject]
-        public void Construct(ITargetPicker targetPicker)
+        public void Construct(ITargetPicker targetPicker, SignalBus signalBus)
         {
             this.targetPicker = targetPicker;
             this.navMeshAgent = this.GetComponent<NavMeshAgent>();
+
+            signalBus.Subscribe<EnemyState.EnemyHealthChanged>(HealthChanged);
+        }
+
+        private void HealthChanged(EnemyState.EnemyHealthChanged enemyHealthChanged)
+        {
+            if (this.gameObject.name != enemyHealthChanged.Name)
+            {
+                return;
+            }
+
+            Debug.LogFormat("{0}'s health changed from {1} to {2}", enemyHealthChanged.Name, enemyHealthChanged.HealthBefore, enemyHealthChanged.HealthAfter);
+
+            if (enemyHealthChanged.HealthAfter <= 0f)
+            {
+                this.pool.Despawn(this);
+            }
         }
 
         private bool pursuing;
@@ -56,7 +75,22 @@ namespace Enemies
             }
         }
 
-        public class Pool : MonoMemoryPool<Pursuer>
+        public void OnDespawned()
+        {
+        }
+
+        public void OnSpawned(IMemoryPool pool)
+        {
+            Debug.LogFormat("Spawned {0}, pull != null = {1}", this.gameObject.name, pool != null);
+
+            this.pool = pool;
+        }
+
+        public class Factory : PlaceholderFactory<Pursuer>
+        {
+        }
+
+        public class Pool : MonoPoolableMemoryPool<IMemoryPool, Pursuer>
         {
             protected override void OnSpawned(Pursuer item)
             {

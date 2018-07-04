@@ -16,6 +16,8 @@ namespace DI
             this.Container.BindInstance(this.GameSettings);
 
             this.Container.BindInstance(this.GameSettings.PlayerStateSettings);
+
+            this.Container.BindInstance(this.GameSettings.EnemyStateSettings);
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Configuration;
 using Control;
 using Enemies;
 using Spawn;
 using Targeting;
-using UnityEditor;
-using UnityEngine;
+using Weapon;
 using Zenject;
 
 namespace DI
@@ -23,18 +23,34 @@ namespace DI
             var enemyPrefab = this.gameSettings.WaveConfigurations.First(wc => wc.EnemyPrefab != null).EnemyPrefab;
 
             //TODO : change concrete type to config prefab
-            this.Container.BindMemoryPool<Pursuer, Pursuer.Pool>().WithInitialSize(poolSize).FromComponentInNewPrefab(enemyPrefab).UnderTransformGroup("Enemies");
+            this.Container.BindFactory<Pursuer, Pursuer.Factory>().FromPoolableMemoryPool<Pursuer, Pursuer.Pool>(
+                binder => binder.WithInitialSize(poolSize).FromComponentInNewPrefab(enemyPrefab)
+                    .UnderTransformGroup("Enemies"));
+            
+            this.Container.BindInterfacesAndSelfTo<PlayerState>().AsSingle();
+            this.Container.BindInterfacesAndSelfTo<EnemyState>().AsSingle();
 
             this.Container.BindInterfacesAndSelfTo<DefaultEnemyGenerator>().AsSingle();
 
             this.InstallSignals();
+            this.InstallDamageTakers();
         }
 
         private void InstallSignals()
         {
             SignalBusInstaller.Install(this.Container);
+            this.Container.DeclareSignal<PlayerState.PlayerHealthChanged>();
+            this.Container.DeclareSignal<EnemyState.EnemyHealthChanged>();
+        }
 
-            this.Container.DeclareSignal<PlayerState.HealthChanged>();
+        private void InstallDamageTakers()
+        {
+            this.Container.Bind<IDictionary<string, IDamageTaker>>().FromMethod(c =>
+                new Dictionary<string, IDamageTaker>
+                {
+                    {"Bullet", c.Container.Resolve<EnemyState>()},
+                    {"Enemy", c.Container.Resolve<PlayerState>()}
+                }).AsSingle();
         }
     }
 }

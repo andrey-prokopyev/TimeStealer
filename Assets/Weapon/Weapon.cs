@@ -30,8 +30,6 @@ namespace Weapon
         {
             var startCharging = Input.GetAxis("Fire1") > 0;
 
-            Debug.LogFormat("startCharging: {0}", startCharging);
-
             if (startCharging)
             {
                 this.weaponCharger.StartCharging();

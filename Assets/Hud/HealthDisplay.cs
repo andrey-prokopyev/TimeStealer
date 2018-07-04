@@ -19,11 +19,11 @@ public class HealthDisplay : MonoBehaviour
     public void Construct(SignalBus signalBus, PlayerState.Settings settings)
     {
         this.maxHealth = settings.Health;
-        signalBus.Subscribe<PlayerState.HealthChanged>(this.OnHealthChanged);
+        signalBus.Subscribe<PlayerState.PlayerHealthChanged>(this.OnHealthChanged);
     }
 
-    private void OnHealthChanged(PlayerState.HealthChanged healthChanged)
+    private void OnHealthChanged(PlayerState.PlayerHealthChanged playerHealthChanged)
     {
-        this.textIndicator.text = string.Format("{0} / {1}", healthChanged.HealthAfter, this.maxHealth);
+        this.textIndicator.text = string.Format("{0} / {1}", playerHealthChanged.HealthAfter, this.maxHealth);
     }
 }

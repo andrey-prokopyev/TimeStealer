@@ -16,8 +16,6 @@ public class PlayerInstaller : MonoInstaller
     {
         this.Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle()
             .WithArguments(this.components.CharacterController, this.components.ViewPort, this.settings.PlayerControlSettings);
-
-        this.Container.Bind<PlayerState>().ToSelf().AsSingle();
     }
 
     [Serializable]

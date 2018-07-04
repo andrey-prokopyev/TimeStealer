@@ -7,8 +7,6 @@ namespace Weapon
     {
         private float speed;
 
-        private float charge;
-
         private IMemoryPool pool;
 
         private Vector3 direction;
@@ -16,7 +14,7 @@ namespace Weapon
         public void OnSpawned(float speed, float charge, Vector3 direction, Vector3 position, IMemoryPool pool)
         {
             this.speed = speed;
-            this.charge = charge;
+            this.GetComponent<Damager>().Damage = charge;
             this.pool = pool;
 
             this.direction = direction;
@@ -29,8 +27,10 @@ namespace Weapon
             this.pool = null;
         }
         
-        private void OnCollisionEnter(Collision other)
+        private void OnTriggerEnter(Collider other)
         {
+            Debug.LogFormat("Bullet {0} collided with {1}", this.gameObject.name, other.gameObject.name);
+
             if (other.gameObject.CompareTag("Enemy"))
             {
                 this.pool.Despawn(this);
@@ -60,7 +60,7 @@ namespace Weapon
 
         public override string ToString()
         {
-            return string.Format("Name: {0}, Speed: {1}, Charge: {2}", this.name, speed, charge);
+            return string.Format("Name: {0}, Speed: {1}", this.name, speed);
         }
 
         public class Factory : PlaceholderFactory<float, float, Vector3, Vector3, Bullet>

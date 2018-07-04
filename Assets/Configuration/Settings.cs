@@ -1,7 +1,6 @@
 ﻿using System;
 using Control;
-using Spawn;
-using UnityEngine;
+using Enemies;
 
 namespace Configuration
 {
@@ -17,5 +16,7 @@ namespace Configuration
         public Weapon.Weapon.Settings WeaponSettings;
 
         public Weapon.WeaponCharger.Settings ChargeSettings;
+
+        public EnemyState.Settings EnemyStateSettings;
     }
 }

@@ -318,10 +318,10 @@
   <ItemGroup>
     <Compile Include="Assets\Configuration\Settings.cs" />
     <Compile Include="Assets\Configuration\WaveConfiguration.cs" />
-    <Compile Include="Assets\Control\DamageTaker.cs" />
+    <Compile Include="Assets\Control\DamageReceiver.cs" />
     <Compile Include="Assets\Control\PlayerController.cs" />
     <Compile Include="Assets\Control\PlayerState.cs" />
-    <Compile Include="Assets\Enemies\Damager.cs" />
+    <Compile Include="Assets\Enemies\EnemyState.cs" />
     <Compile Include="Assets\Enemies\Pursuer.cs" />
     <Compile Include="Assets\Hud\HealthDisplay.cs" />
     <Compile Include="Assets\Scripts\DI\MainInstaller.cs" />
@@ -334,6 +334,8 @@
     <Compile Include="Assets\Targeting\ITargetPicker.cs" />
     <Compile Include="Assets\Targeting\PlayerPicker.cs" />
     <Compile Include="Assets\Weapon\Bullet.cs" />
+    <Compile Include="Assets\Weapon\Damager.cs" />
+    <Compile Include="Assets\Weapon\IDamageTaker.cs" />
     <Compile Include="Assets\Weapon\Weapon.cs" />
     <Compile Include="Assets\Weapon\WeaponCharger.cs" />
   </ItemGroup>
