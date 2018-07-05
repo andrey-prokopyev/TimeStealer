@@ -14,5 +14,7 @@ namespace Configuration
         public int MaxEnemies;
 
         public GameObject EnemyPrefab;
+
+        public float TimeBeforeWave;
     }
 }

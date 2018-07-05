@@ -331,8 +331,10 @@
     <Compile Include="Assets\Spawn\DefaultEnemyGenerator.cs" />
     <Compile Include="Assets\Spawn\IEnemyGenerator.cs" />
     <Compile Include="Assets\Spawn\SpawnManager.cs" />
+    <Compile Include="Assets\Spawn\WaveManager.cs" />
     <Compile Include="Assets\Targeting\ITargetPicker.cs" />
     <Compile Include="Assets\Targeting\PlayerPicker.cs" />
+    <Compile Include="Assets\Utilities\CoroutinesWrapper.cs" />
     <Compile Include="Assets\Weapon\Bullet.cs" />
     <Compile Include="Assets\Weapon\Damager.cs" />
     <Compile Include="Assets\Weapon\IDamageTaker.cs" />

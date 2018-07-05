@@ -56,6 +56,11 @@ namespace Enemies
             public float HealthBefore { get; private set; }
 
             public float HealthAfter { get; private set; }
+
+            public bool Killed
+            {
+                get { return this.HealthAfter <= 0f; }
+            }
         }
     }
 }

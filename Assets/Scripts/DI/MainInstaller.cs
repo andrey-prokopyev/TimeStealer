@@ -5,6 +5,7 @@ using Control;
 using Enemies;
 using Spawn;
 using Targeting;
+using Utilities;
 using Weapon;
 using Zenject;
 
@@ -28,9 +29,15 @@ namespace DI
                     .UnderTransformGroup("Enemies"));
             
             this.Container.BindInterfacesAndSelfTo<PlayerState>().AsSingle();
-            this.Container.BindInterfacesAndSelfTo<EnemyState>().AsSingle();
+            this.Container.BindInterfacesAndSelfTo<EnemyState>().AsTransient();
 
             this.Container.BindInterfacesAndSelfTo<DefaultEnemyGenerator>().AsSingle();
+
+            this.Container.BindInterfacesAndSelfTo<WaveManager>().AsSingle().WithArguments(this.gameSettings.WaveConfigurations);
+
+            this.Container.Bind<CoroutinesWrapper>().FromNewComponentOnNewGameObject().AsSingle();
+
+            this.Container.BindInterfacesAndSelfTo<SpawnManager>().AsSingle();
 
             this.InstallSignals();
             this.InstallDamageTakers();

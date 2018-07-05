@@ -14,15 +14,17 @@ MonoBehaviour:
   GameSettings:
     WaveConfigurations:
     - MinTimeBetweenSpawns: 4
-      MaxTimeBetweenSpawns: 8
+      MaxTimeBetweenSpawns: 5
       MaxEnemies: 10
       EnemyPrefab: {fileID: 1274071179731236, guid: 4d33097b54ca9f147a683595b411f941,
         type: 2}
-    - MinTimeBetweenSpawns: 4
-      MaxTimeBetweenSpawns: 8
+      TimeBeforeWave: 5
+    - MinTimeBetweenSpawns: 2
+      MaxTimeBetweenSpawns: 3
       MaxEnemies: 10
       EnemyPrefab: {fileID: 1274071179731236, guid: 4d33097b54ca9f147a683595b411f941,
         type: 2}
+      TimeBeforeWave: 5
     PlayerControlSettings:
       MoveSpeed: 5
     PlayerStateSettings:
@@ -32,7 +34,7 @@ MonoBehaviour:
       BulletPrefab: {fileID: 1371615509362174, guid: efbfa2a35b8699440856322802ec170a,
         type: 2}
     ChargeSettings:
-      InitialCharge: 100
+      InitialCharge: 1000
       ChargeSpeed: 10
     EnemyStateSettings:
-      Health: 5
+      Health: 1

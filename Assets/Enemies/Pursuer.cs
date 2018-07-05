@@ -35,7 +35,7 @@ namespace Enemies
 
             Debug.LogFormat("{0}'s health changed from {1} to {2}", enemyHealthChanged.Name, enemyHealthChanged.HealthBefore, enemyHealthChanged.HealthAfter);
 
-            if (enemyHealthChanged.HealthAfter <= 0f)
+            if (enemyHealthChanged.Killed)
             {
                 this.pool.Despawn(this);
             }

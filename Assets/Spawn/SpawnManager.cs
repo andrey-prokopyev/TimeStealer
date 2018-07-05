@@ -1,44 +1,35 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Configuration;
 using UnityEngine;
 using UnityEngine.AI;
+using Utilities;
 using Zenject;
 
 namespace Spawn
 {
-    public class SpawnManager : MonoBehaviour
+    public class SpawnManager : IInitializable
     {
         private const string SpawnPointTag = "Respawn";
 
-        private readonly Queue<GameObject> spawnQueue = new Queue<GameObject>();
+        private readonly Queue<GameObject> spawnQueue;
+
+        private readonly IEnemyGenerator enemyGenerator;
 
         private Transform[] spawnPoints;
 
-        private IEnemyGenerator enemyGenerator;
-
-        private Settings gameSettings;
-
-        private int currentWave = -1;
-        
-        [Inject]
-        public void Construct(IEnemyGenerator enemyGenerator, Settings gameSettings)
+        public SpawnManager(IEnemyGenerator enemyGenerator, CoroutinesWrapper coroutinesWrapper)
         {
             this.spawnPoints = GameObject.FindGameObjectsWithTag(SpawnPointTag).Select(g => g.transform).ToArray();
+            this.spawnQueue = new Queue<GameObject>();
+            coroutinesWrapper.StartCoroutine(this.WaitForSpawn());
+
             this.enemyGenerator = enemyGenerator;
-            this.gameSettings = gameSettings;
-
-            this.StartNextWave();
-
-            this.enemyGenerator.SetQueue(this.spawnQueue);
-            this.StartCoroutine(this.WaitForSpawn());
         }
 
-        private void StartNextWave()
+        public void Initialize()
         {
-            this.currentWave++;
-            this.enemyGenerator.SetCurrentWave(this.gameSettings.WaveConfigurations[this.currentWave]);
+            enemyGenerator.SetQueue(this.spawnQueue);
         }
 
         private IEnumerator WaitForSpawn()
