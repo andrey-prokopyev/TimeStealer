@@ -22,8 +22,11 @@ namespace Weapon
 
         public void StartCharging()
         {
-            this.CurrentCharge = 0f;
-            this.charging = true;
+            if (!this.charging)
+            {
+                this.CurrentCharge = 0f;
+                this.charging = true;
+            }
         }
 
         public bool StopCharging()
@@ -50,8 +53,6 @@ namespace Weapon
                 {
                     this.CurrentCharge = newCharge;
                 }
-
-                Debug.LogFormat("charging = {0}, CurrentCharge = {1}", this.charging, this.CurrentCharge);
             }
         }
 
