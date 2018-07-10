@@ -20,6 +20,8 @@ namespace Control
             this.settings = settings;
             this.playerState = playerState;
             this.viewPort = viewPort;
+
+            Debug.LogFormat("View port is {0}null", viewPort == null ? string.Empty : "not ");
         }
 
         public void Tick()

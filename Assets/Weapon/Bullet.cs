@@ -5,11 +5,10 @@ namespace Weapon
 {
     public class Bullet : MonoBehaviour, IPoolable<float, float, Vector3, Vector3, IMemoryPool>
     {
+        //TODO : fix fireball speed
         private float speed;
 
         private IMemoryPool pool;
-
-        private Vector3 direction;
 
         public void OnSpawned(float speed, float charge, Vector3 direction, Vector3 position, IMemoryPool pool)
         {
@@ -17,9 +16,8 @@ namespace Weapon
             this.GetComponent<Damager>().Damage = charge;
             this.pool = pool;
 
-            this.direction = direction;
-
             this.transform.position = position;
+            this.transform.rotation = Quaternion.LookRotation(direction);
         }
 
         public void OnDespawned()
@@ -49,13 +47,6 @@ namespace Weapon
                 Debug.LogFormat("{0} has left level boundary", this.gameObject.name);
                 this.pool.Despawn(this);
             }
-        }
-
-        private void FixedUpdate()
-        {
-            var deltaPosition = this.speed * this.direction.normalized;
-
-            this.transform.position += deltaPosition;
         }
 
         public override string ToString()

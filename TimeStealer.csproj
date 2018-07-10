@@ -316,6 +316,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Afroshaman pack\Documentation\Pack info.cs" />
+    <Compile Include="Assets\Afroshaman pack\Scripts\Camposition.cs" />
     <Compile Include="Assets\Configuration\Settings.cs" />
     <Compile Include="Assets\Configuration\WaveConfiguration.cs" />
     <Compile Include="Assets\Control\DamageReceiver.cs" />
@@ -324,6 +326,15 @@
     <Compile Include="Assets\Enemies\EnemyState.cs" />
     <Compile Include="Assets\Enemies\Pursuer.cs" />
     <Compile Include="Assets\Hud\HealthDisplay.cs" />
+    <Compile Include="Assets\PyroParticles\Demo\DemoScript.cs" />
+    <Compile Include="Assets\PyroParticles\Demo\DemoScriptEditor.cs" />
+    <Compile Include="Assets\PyroParticles\Prefab\Script\FireBaseScript.cs" />
+    <Compile Include="Assets\PyroParticles\Prefab\Script\FireCollisionForwardScript.cs" />
+    <Compile Include="Assets\PyroParticles\Prefab\Script\FireConstantBaseScript.cs" />
+    <Compile Include="Assets\PyroParticles\Prefab\Script\FireLightScript.cs" />
+    <Compile Include="Assets\PyroParticles\Prefab\Script\FireProjectileScript.cs" />
+    <Compile Include="Assets\PyroParticles\Prefab\Script\MeteorSwarmScript.cs" />
+    <Compile Include="Assets\PyroParticles\Prefab\Script\SingleLineAttribute.cs" />
     <Compile Include="Assets\Scripts\DI\MainInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\PlayerInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\SettingsInstaller.cs" />
@@ -342,6 +353,8 @@
     <Compile Include="Assets\Weapon\WeaponCharger.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\PyroParticles\Prefab\Materials\AdditiveTintable.shader" />
+    <None Include="Assets\PyroParticles\Readme.txt" />
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="C:\Users\kidof\AppData\Local\Unity\cache\packages\packages.unity.com\com.unity.package-manager-ui@1.8.8\Editor\Resources\Styles\Main_Dark.uss" />
