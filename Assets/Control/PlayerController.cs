@@ -31,6 +31,7 @@ namespace Control
             var moveSpeed = this.TransformInputToViewPort(input);
 
             this.controller.SimpleMove(moveSpeed);
+            this.controller.transform.rotation = Quaternion.LookRotation(this.playerState.LookDirection);
         }
 
         private Vector3 TransformInputToViewPort(Vector3 input)
