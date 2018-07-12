@@ -14,24 +14,30 @@ namespace Control
 
         private readonly PlayerState playerState;
 
-        public PlayerController(CharacterController controller, Transform viewPort, Settings settings, PlayerState playerState)
+        private readonly SignalBus bus;
+
+        public PlayerController(CharacterController controller, Transform viewPort, Settings settings, PlayerState playerState, SignalBus bus)
         {
             this.controller = controller;
             this.settings = settings;
             this.playerState = playerState;
             this.viewPort = viewPort;
-
-            Debug.LogFormat("View port is {0}null", viewPort == null ? string.Empty : "not ");
+            this.bus = bus;
         }
 
         public void Tick()
         {
-            var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * this.settings.MoveSpeed;
+            if (!this.playerState.OnHold)
+            {
+                var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * this.settings.MoveSpeed;
 
-            var moveSpeed = this.TransformInputToViewPort(input);
+                var moveSpeed = this.TransformInputToViewPort(input);
 
-            this.controller.SimpleMove(moveSpeed);
-            this.controller.transform.rotation = Quaternion.LookRotation(this.playerState.LookDirection);
+                this.controller.SimpleMove(moveSpeed);
+                this.controller.transform.rotation = Quaternion.LookRotation(this.playerState.LookDirection);
+
+                this.bus.Fire(new Movement(moveSpeed));
+            }
         }
 
         private Vector3 TransformInputToViewPort(Vector3 input)
@@ -47,6 +53,16 @@ namespace Control
         public class Settings
         {
             public float MoveSpeed;
+        }
+
+        public class Movement
+        {
+            public Movement(Vector3 speed)
+            {
+                Speed = speed;
+            }
+
+            public Vector3 Speed { get; private set; }
         }
     }
 }

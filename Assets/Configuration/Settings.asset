@@ -36,5 +36,6 @@ MonoBehaviour:
     ChargeSettings:
       InitialCharge: 1000
       ChargeSpeed: 10
+      MaxCharge: 5
     EnemyStateSettings:
       Health: 1

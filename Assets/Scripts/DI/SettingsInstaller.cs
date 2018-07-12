@@ -18,6 +18,8 @@ namespace DI
             this.Container.BindInstance(this.GameSettings.PlayerStateSettings);
 
             this.Container.BindInstance(this.GameSettings.EnemyStateSettings);
+
+            this.Container.BindInstance(this.GameSettings.ChargeSettings);
         }
     }
 }

@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Control
 {
-    public class PlayerState : IDamageTaker
+    public class PlayerState : IDamageTaker, IWeaponHolder
     {
         private readonly SignalBus signalBus;
 
@@ -18,6 +18,8 @@ namespace Control
         }
 
         public Vector3 LookDirection { get; set; }
+
+        public bool OnHold { get; set; }
 
         public float TakeDamage(float damage, string damagerReceiverName)
         {

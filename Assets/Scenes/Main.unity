@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.1, g: 0.1, b: 0.1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 4
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -156,6 +156,7 @@ MonoBehaviour:
   components:
     CharacterController: {fileID: 1178604455}
     ViewPort: {fileID: 790259611}
+    Animator: {fileID: 1178604458}
 --- !u!1 &170076733
 GameObject:
   m_ObjectHideFlags: 0
@@ -561,7 +562,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 2}
       propertyPath: m_LockCursor
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: 49a0e923d39ec3c4c8bb97699e2f2903, type: 2}
       propertyPath: m_TurnSpeed
@@ -672,7 +673,7 @@ Prefab:
     - target: {fileID: 9558986, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 9100000, guid: 7f7b35ec59365c542a9683f1d9a5c64b, type: 2}
     - target: {fileID: 9558986, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_WarningMessage
       value: 
@@ -711,19 +712,19 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 447484, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.07403106
+      value: 0.07403109
       objectReference: {fileID: 0}
     - target: {fileID: 447484, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.11721836
+      value: 0.11721839
       objectReference: {fileID: 0}
     - target: {fileID: 416340, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0.028588232
+      value: 0.028588234
       objectReference: {fileID: 0}
     - target: {fileID: 416340, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_LocalRotation.z
-      value: -0.11852354
+      value: -0.118523546
       objectReference: {fileID: 0}
     - target: {fileID: 443504, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_LocalRotation.y
@@ -784,6 +785,10 @@ Prefab:
     - target: {fileID: 427268, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
       propertyPath: m_LocalScale.z
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 9558986, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
+      propertyPath: m_Avatar
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
@@ -856,6 +861,76 @@ MonoBehaviour:
 Transform:
   m_PrefabParentObject: {fileID: 427268, guid: 0e43a20a96fe7004c9498d25fac97199, type: 2}
   m_PrefabInternal: {fileID: 1178604451}
+--- !u!95 &1178604458 stripped
+Animator:
+  m_PrefabParentObject: {fileID: 9558986, guid: 0e43a20a96fe7004c9498d25fac97199,
+    type: 2}
+  m_PrefabInternal: {fileID: 1178604451}
+--- !u!1 &1402731298
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1402731300}
+  - component: {fileID: 1402731299}
+  m_Layer: 0
+  m_Name: Water4AdvancedReflectionSceneCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!20 &1402731299
+Camera:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1402731298}
+  m_Enabled: 0
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 1}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967279
+  m_RenderingPath: 1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &1402731300
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1402731298}
+  m_LocalRotation: {x: 0, y: 0.000000063325004, z: 0, w: 1}
+  m_LocalPosition: {x: 99.075, y: -1.3600001, z: 96.655}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1465099304
 Prefab:
   m_ObjectHideFlags: 0

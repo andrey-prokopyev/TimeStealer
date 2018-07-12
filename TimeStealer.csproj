@@ -321,6 +321,8 @@
     <Compile Include="Assets\Configuration\Settings.cs" />
     <Compile Include="Assets\Configuration\WaveConfiguration.cs" />
     <Compile Include="Assets\Control\DamageReceiver.cs" />
+    <Compile Include="Assets\Control\IWeaponHolder.cs" />
+    <Compile Include="Assets\Control\PlayerAnimator.cs" />
     <Compile Include="Assets\Control\PlayerController.cs" />
     <Compile Include="Assets\Control\PlayerState.cs" />
     <Compile Include="Assets\Enemies\EnemyState.cs" />

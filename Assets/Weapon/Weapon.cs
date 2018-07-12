@@ -36,7 +36,7 @@ namespace Weapon
             }
             else
             {
-                if (this.weaponCharger.StopCharging() && this.weaponCharger.CurrentCharge > 0f)
+                if (this.weaponCharger.StopCharging() && this.weaponCharger.IsCharged)
                 {
                     this.Fire();
                 }

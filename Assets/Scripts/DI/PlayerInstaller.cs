@@ -16,6 +16,8 @@ public class PlayerInstaller : MonoInstaller
     {
         this.Container.BindInterfacesAndSelfTo<PlayerController>().AsSingle()
             .WithArguments(this.components.CharacterController, this.components.ViewPort, this.settings.PlayerControlSettings);
+
+        this.Container.BindInterfacesAndSelfTo<PlayerAnimator>().AsSingle().WithArguments(this.components.Animator);
     }
 
     [Serializable]
@@ -23,5 +25,6 @@ public class PlayerInstaller : MonoInstaller
     {
         public CharacterController CharacterController;
         public Transform ViewPort;
+        public Animator Animator;
     }
 }

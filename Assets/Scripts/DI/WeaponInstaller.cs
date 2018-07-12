@@ -20,9 +20,9 @@ namespace DI
             this.Container.BindInterfacesAndSelfTo<Weapon.Weapon>().AsSingle()
                 .WithArguments(this.gameSettings.WeaponSettings, this.components.WeaponTransform);
 
-            this.Container.BindInterfacesAndSelfTo<WeaponCharger>().FromMethod(s => new WeaponCharger(this.gameSettings.ChargeSettings)).AsSingle();
+            this.Container.BindInterfacesAndSelfTo<WeaponCharger>().AsSingle();
             
-            this.Container.BindFactory<float, float, Vector3, Vector3, Bullet, Bullet.Factory>()
+            this.Container.BindFactory<float, WeaponCharger.Charge, Vector3, Vector3, Bullet, Bullet.Factory>()
                 .FromPoolableMemoryPool<Bullet, Bullet.Pool>(binder =>
                     binder.WithInitialSize(10).FromComponentInNewPrefab(gameSettings.WeaponSettings.BulletPrefab)
                         .UnderTransform(this.components.BulletsGroup));

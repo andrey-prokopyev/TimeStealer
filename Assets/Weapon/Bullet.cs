@@ -3,21 +3,24 @@ using Zenject;
 
 namespace Weapon
 {
-    public class Bullet : MonoBehaviour, IPoolable<float, float, Vector3, Vector3, IMemoryPool>
+    public class Bullet : MonoBehaviour, IPoolable<float, WeaponCharger.Charge, Vector3, Vector3, IMemoryPool>
     {
         //TODO : fix fireball speed
         private float speed;
 
         private IMemoryPool pool;
 
-        public void OnSpawned(float speed, float charge, Vector3 direction, Vector3 position, IMemoryPool pool)
+        public void OnSpawned(float speed, WeaponCharger.Charge charge, Vector3 direction, Vector3 position, IMemoryPool pool)
         {
             this.speed = speed;
-            this.GetComponent<Damager>().Damage = charge;
+            this.GetComponent<Damager>().Damage = charge.Current;
             this.pool = pool;
 
             this.transform.position = position;
             this.transform.rotation = Quaternion.LookRotation(direction);
+            this.transform.localScale *= charge.Current / charge.Max;
+
+            Debug.LogFormat("{0} scale is {1}", this.name, this.transform.localScale);
         }
 
         public void OnDespawned()
@@ -27,8 +30,6 @@ namespace Weapon
         
         private void OnTriggerEnter(Collider other)
         {
-            Debug.LogFormat("Bullet {0} collided with {1}", this.gameObject.name, other.gameObject.name);
-
             if (other.gameObject.CompareTag("Enemy"))
             {
                 this.pool.Despawn(this);
@@ -54,11 +55,11 @@ namespace Weapon
             return string.Format("Name: {0}, Speed: {1}", this.name, speed);
         }
 
-        public class Factory : PlaceholderFactory<float, float, Vector3, Vector3, Bullet>
+        public class Factory : PlaceholderFactory<float, WeaponCharger.Charge, Vector3, Vector3, Bullet>
         {
         }
 
-        public class Pool : MonoPoolableMemoryPool<float, float, Vector3, Vector3, IMemoryPool, Bullet>
+        public class Pool : MonoPoolableMemoryPool<float, WeaponCharger.Charge, Vector3, Vector3, IMemoryPool, Bullet>
         {
         }
     }
