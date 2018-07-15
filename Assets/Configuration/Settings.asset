@@ -30,7 +30,7 @@ MonoBehaviour:
     PlayerStateSettings:
       Health: 100
     WeaponSettings:
-      BulletSpeed: 0.1
+      BulletSpeed: 15
       BulletPrefab: {fileID: 1914374150808010, guid: 98f1740c6981206449c6020272cf79fa,
         type: 2}
     ChargeSettings:

@@ -22,6 +22,8 @@ namespace Control
         {
             if (other.CompareTag(DamageTakerTag))
             {
+                Debug.LogFormat("{0} received damage from {1}", this.gameObject.name, other.name);
+
                 var damager = other.GetComponent<Damager>();
                 Assert.IsNotNull(damager, string.Format("Damager taker {0} should contain Damager component", other.gameObject.name));
 

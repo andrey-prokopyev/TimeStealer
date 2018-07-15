@@ -8,6 +8,7 @@ TagManager:
   - Boundary
   - Bullet
   - Fire
+  - Environment
   layers:
   - Default
   - TransparentFX

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DigitalRuby.PyroParticles;
+using UnityEngine;
 using Zenject;
 
 namespace Weapon
@@ -18,22 +19,22 @@ namespace Weapon
 
             this.transform.position = position;
             this.transform.rotation = Quaternion.LookRotation(direction);
-            this.transform.localScale *= charge.Current / charge.Max;
 
-            Debug.LogFormat("{0} scale is {1}", this.name, this.transform.localScale);
+            var fireball = this.transform.Find("Fireball");
+            var projectilesParticles = fireball.Find("FireballProjectiles").GetComponent<ParticleSystem>().main;
+            var bulletSpeed = speed * (1 - charge.Current / (2 * charge.Max));
+            projectilesParticles.startSpeed = new ParticleSystem.MinMaxCurve(bulletSpeed);
+
+            var tailParticles = fireball.Find("FireballTail").GetComponent<ParticleSystem>().main;
+            tailParticles.startSize = new ParticleSystem.MinMaxCurve(tailParticles.startSize.constant * charge.Current / charge.Max);
+            tailParticles.startSpeed = projectilesParticles.startSpeed;
+
+            fireball.GetComponent<FireProjectileScript>().ProjectileColliderSpeed = bulletSpeed;
         }
 
         public void OnDespawned()
         {
             this.pool = null;
-        }
-        
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.CompareTag("Enemy"))
-            {
-                this.pool.Despawn(this);
-            }
         }
 
         private void OnTriggerExit(Collider other)

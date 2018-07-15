@@ -47,8 +47,6 @@ namespace Weapon
         {
             var bullet = this.bulletFactory.Create(this.weaponSettings.BulletSpeed, this.weaponCharger.CurrentCharge,
                 this.playerState.LookDirection, this.weaponTransform.position);
-
-            Debug.LogFormat("Fired {0} to direction {1}", bullet, this.playerState.LookDirection);
         }
 
         [Serializable]

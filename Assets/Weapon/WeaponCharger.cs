@@ -52,7 +52,6 @@ namespace Weapon
             {
                 this.charging = false;
                 this.chargeLeft -= this.CurrentCharge.Current;
-                Debug.LogFormat("After charging stop chargeLeft = {0}", this.chargeLeft);
 
                 this.weaponHolder.OnHold = false;
 
