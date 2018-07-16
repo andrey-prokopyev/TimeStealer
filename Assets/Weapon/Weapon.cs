@@ -17,13 +17,18 @@ namespace Weapon
 
         private readonly Transform weaponTransform;
 
-        public Weapon(WeaponCharger weaponCharger, PlayerState playerState, Bullet.Factory bulletFactory, Settings weaponSettings, Transform weaponTransform)
+        private float bulletSpeed;
+
+        public Weapon(WeaponCharger weaponCharger, PlayerState playerState, Bullet.Factory bulletFactory, Settings weaponSettings, Transform weaponTransform, SignalBus bus)
         {
             this.weaponCharger = weaponCharger;
             this.playerState = playerState;
             this.bulletFactory = bulletFactory;
             this.weaponSettings = weaponSettings;
             this.weaponTransform = weaponTransform;
+            this.bulletSpeed = this.weaponSettings.BulletSpeed;
+
+            bus.Subscribe<PlayerState.SpeedChanged>(this.OnPlayerSpeedChanged);
         }
 
         public void Tick()
@@ -45,8 +50,12 @@ namespace Weapon
 
         private void Fire()
         {
-            var bullet = this.bulletFactory.Create(this.weaponSettings.BulletSpeed, this.weaponCharger.CurrentCharge,
-                this.playerState.LookDirection, this.weaponTransform.position);
+            this.bulletFactory.Create(this.bulletSpeed, this.weaponCharger.CurrentCharge, this.playerState.LookDirection, this.weaponTransform.position);
+        }
+
+        private void OnPlayerSpeedChanged(PlayerState.SpeedChanged speedChanged)
+        {
+            this.bulletSpeed = this.weaponSettings.BulletSpeed * speedChanged.SpeedAfter / speedChanged.InitialSpeed;
         }
 
         [Serializable]

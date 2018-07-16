@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace Control
@@ -10,16 +9,13 @@ namespace Control
 
         private readonly Transform viewPort;
 
-        private readonly Settings settings;
-
         private readonly PlayerState playerState;
 
         private readonly SignalBus bus;
 
-        public PlayerController(CharacterController controller, Transform viewPort, Settings settings, PlayerState playerState, SignalBus bus)
+        public PlayerController(CharacterController controller, Transform viewPort, PlayerState playerState, SignalBus bus)
         {
             this.controller = controller;
-            this.settings = settings;
             this.playerState = playerState;
             this.viewPort = viewPort;
             this.bus = bus;
@@ -29,8 +25,7 @@ namespace Control
         {
             if (!this.playerState.OnHold)
             {
-                var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * this.settings.MoveSpeed;
-
+                var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * this.playerState.Speed;
                 var moveSpeed = this.TransformInputToViewPort(input);
 
                 this.controller.SimpleMove(moveSpeed);
@@ -49,20 +44,14 @@ namespace Control
             return input.z * viewPortForward + input.x * this.viewPort.right;
         }
 
-        [Serializable]
-        public class Settings
-        {
-            public float MoveSpeed;
-        }
-
         public class Movement
         {
-            public Movement(Vector3 speed)
+            public Movement(Vector3 direction)
             {
-                Speed = speed;
+                this.Direction = direction;
             }
 
-            public Vector3 Speed { get; private set; }
+            public Vector3 Direction { get; private set; }
         }
     }
 }

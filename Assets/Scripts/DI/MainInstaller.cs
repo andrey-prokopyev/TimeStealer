@@ -47,6 +47,7 @@ namespace DI
         {
             SignalBusInstaller.Install(this.Container);
             this.Container.DeclareSignal<PlayerState.PlayerHealthChanged>();
+            this.Container.DeclareSignal<PlayerState.SpeedChanged>();
             this.Container.DeclareSignal<EnemyState.EnemyHealthChanged>();
             this.Container.DeclareSignal<PlayerController.Movement>();
             this.Container.DeclareSignal<WeaponCharger.ChargingWeapon>();

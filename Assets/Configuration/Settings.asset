@@ -25,10 +25,9 @@ MonoBehaviour:
       EnemyPrefab: {fileID: 1307492420301308, guid: 651c8fc08e0173a43bb2b993b174e7df,
         type: 2}
       TimeBeforeWave: 5
-    PlayerControlSettings:
-      MoveSpeed: 5
     PlayerStateSettings:
       Health: 100
+      MoveSpeed: 5
     WeaponSettings:
       BulletSpeed: 15
       BulletPrefab: {fileID: 1914374150808010, guid: 98f1740c6981206449c6020272cf79fa,

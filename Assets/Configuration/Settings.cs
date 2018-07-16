@@ -9,8 +9,6 @@ namespace Configuration
     {
         public WaveConfiguration[] WaveConfigurations;
 
-        public PlayerController.Settings PlayerControlSettings;
-
         public PlayerState.Settings PlayerStateSettings;
 
         public Weapon.Weapon.Settings WeaponSettings;

@@ -19,14 +19,20 @@ public class PlayerAnimator : IInitializable
 
     public void Initialize()
     {
-        bus.Subscribe<PlayerController.Movement>(this.OnPlayerMoved);
-        bus.Subscribe<WeaponCharger.ChargingWeapon>(this.OnPlayerCharging);
+        this.bus.Subscribe<PlayerController.Movement>(this.OnPlayerMoved);
+        this.bus.Subscribe<PlayerState.SpeedChanged>(this.OnPlayerSpeedChanged);
+        this.bus.Subscribe<WeaponCharger.ChargingWeapon>(this.OnPlayerCharging);
     }
 
     private void OnPlayerMoved(PlayerController.Movement movement)
     {
-        var newState = movement.Speed.sqrMagnitude > 0 ? PlayerAnimationState.Moving : PlayerAnimationState.Idle;
+        var newState = movement.Direction.sqrMagnitude > 0 ? PlayerAnimationState.Moving : PlayerAnimationState.Idle;
         this.UpdateStateIfChanged(newState);
+    }
+
+    private void OnPlayerSpeedChanged(PlayerState.SpeedChanged speedChanged)
+    {
+        this.animator.speed = speedChanged.SpeedAfter / speedChanged.InitialSpeed;
     }
 
     private void OnPlayerCharging(WeaponCharger.ChargingWeapon weaponCharge)

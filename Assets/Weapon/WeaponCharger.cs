@@ -11,9 +11,11 @@ namespace Weapon
 
         private readonly SignalBus bus;
 
-        private readonly float chargeSpeed;
+        private readonly Settings settings;
 
         private readonly float maxCharge;
+
+        private float chargeSpeed;
 
         private float chargeLeft;
 
@@ -23,9 +25,12 @@ namespace Weapon
         {
             this.weaponHolder = weaponHolder;
             this.bus = bus;
+            this.settings = settings;
             this.chargeLeft = settings.InitialCharge;
             this.chargeSpeed = settings.ChargeSpeed;
             this.maxCharge = settings.MaxCharge;
+
+            this.bus.Subscribe<PlayerState.SpeedChanged>(this.OnPlayerSpeedChanged);
         }
 
         public Charge CurrentCharge { get; private set; }
@@ -72,8 +77,15 @@ namespace Weapon
                     this.CurrentCharge = new Charge(newCharge, this.maxCharge);
 
                     this.bus.Fire(new ChargingWeapon(this.CurrentCharge));
+
+                    Debug.LogFormat("Current charge: {0}", this.CurrentCharge.Current);
                 }
             }
+        }
+
+        private void OnPlayerSpeedChanged(PlayerState.SpeedChanged speedChanged)
+        {
+            this.chargeSpeed = this.settings.ChargeSpeed * speedChanged.SpeedAfter / speedChanged.InitialSpeed;
         }
 
         public class ChargingWeapon
