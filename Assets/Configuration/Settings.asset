@@ -16,15 +16,13 @@ MonoBehaviour:
     - MinTimeBetweenSpawns: 4
       MaxTimeBetweenSpawns: 5
       MaxEnemies: 10
-      EnemyPrefab: {fileID: 1307492420301308, guid: 651c8fc08e0173a43bb2b993b174e7df,
-        type: 2}
       TimeBeforeWave: 5
+      EnemyType: Pursuer
     - MinTimeBetweenSpawns: 2
       MaxTimeBetweenSpawns: 3
       MaxEnemies: 10
-      EnemyPrefab: {fileID: 1307492420301308, guid: 651c8fc08e0173a43bb2b993b174e7df,
-        type: 2}
       TimeBeforeWave: 5
+      EnemyType: PlayerAdvancedPursuer
     PlayerStateSettings:
       Health: 100
       MoveSpeed: 5
@@ -38,3 +36,7 @@ MonoBehaviour:
       MaxCharge: 5
     EnemyStateSettings:
       Health: 1
+    EnemyPrefabConfiguration:
+      Prefabs:
+      - {fileID: 1307492420301308, guid: 651c8fc08e0173a43bb2b993b174e7df, type: 2}
+      - {fileID: 1307492420301308, guid: 81a9d5f3bef516c44bf9d7b1758ed802, type: 2}

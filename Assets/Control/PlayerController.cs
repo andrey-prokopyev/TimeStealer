@@ -26,12 +26,16 @@ namespace Control
             if (!this.playerState.OnHold)
             {
                 var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * this.playerState.Speed;
-                var moveSpeed = this.TransformInputToViewPort(input);
+                var direction = this.TransformInputToViewPort(input);
 
-                this.controller.SimpleMove(moveSpeed);
+                this.playerState.MoveDirection = direction;
+
+                this.controller.SimpleMove(direction);
                 this.controller.transform.rotation = Quaternion.LookRotation(this.playerState.LookDirection);
 
-                this.bus.Fire(new Movement(moveSpeed));
+                this.playerState.Position = this.controller.gameObject.transform.position;
+
+                this.bus.Fire(new Movement(direction));
             }
         }
 

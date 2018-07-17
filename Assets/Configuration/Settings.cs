@@ -16,5 +16,7 @@ namespace Configuration
         public Weapon.WeaponCharger.Settings ChargeSettings;
 
         public EnemyState.Settings EnemyStateSettings;
+
+        public EnemyPrefabConfiguration EnemyPrefabConfiguration;
     }
 }

@@ -5,6 +5,7 @@ using Control;
 using Enemies;
 using Spawn;
 using Targeting;
+using UnityEngine;
 using Utilities;
 using Weapon;
 using Zenject;
@@ -18,16 +19,14 @@ namespace DI
 
         public override void InstallBindings()
         {
-            this.Container.Bind<ITargetPicker>().To<PlayerPicker>().AsSingle();
+            this.Container.Bind<ITargetPicker>().To<PlayerPicker>().AsSingle().WhenInjectedExactlyInto<Pursuer>();
+            this.Container.Bind<ITargetPicker>().To<PlayerAdvanceTargetPicker>().AsSingle().WhenInjectedExactlyInto<PlayerAdvancedPursuer>();
 
             var poolSize = this.gameSettings.WaveConfigurations.Max(wc => wc.MaxEnemies);
-            var enemyPrefab = this.gameSettings.WaveConfigurations.First(wc => wc.EnemyPrefab != null).EnemyPrefab;
 
-            //TODO : change concrete type to config prefab
-            this.Container.BindFactory<Pursuer, Pursuer.Factory>().FromPoolableMemoryPool<Pursuer, Pursuer.Pool>(
-                binder => binder.WithInitialSize(poolSize).FromComponentInNewPrefab(enemyPrefab)
-                    .UnderTransformGroup("Enemies"));
-            
+            this.InstallEnemyPrefab<Pursuer, Pursuer.Factory, Pursuer.Pool>(poolSize);
+            this.InstallEnemyPrefab<PlayerAdvancedPursuer, PlayerAdvancedPursuer.Factory, PlayerAdvancedPursuer.Pool>(poolSize);
+
             this.Container.BindInterfacesAndSelfTo<PlayerState>().AsSingle();
             this.Container.BindInterfacesAndSelfTo<EnemyState>().AsTransient();
 
@@ -61,6 +60,13 @@ namespace DI
                     {"Bullet", c.Container.Resolve<EnemyState>()},
                     {"Enemy", c.Container.Resolve<PlayerState>()}
                 }).AsSingle();
+        }
+
+        private void InstallEnemyPrefab<TEnemy, TFactory, TPool>(int poolSize) where TFactory : PlaceholderFactory<TEnemy> where TPool : MemoryPool<IMemoryPool, TEnemy> where TEnemy : IPoolable<IMemoryPool>
+        {
+            this.Container.BindFactory<TEnemy, TFactory>().FromPoolableMemoryPool<TEnemy, TPool>(
+                binder => binder.WithInitialSize(poolSize).FromComponentInNewPrefab(this.gameSettings.EnemyPrefabConfiguration.PrefabDictionary[typeof(TEnemy).Name])
+                    .UnderTransformGroup("Enemies"));
         }
     }
 }

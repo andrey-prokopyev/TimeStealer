@@ -23,6 +23,10 @@ namespace Control
 
         public Vector3 LookDirection { get; set; }
 
+        public Vector3 MoveDirection { get; set; }
+
+        public Vector3 Position { get; set; }
+
         public bool OnHold { get; set; }
 
         public float Speed { get; private set; }

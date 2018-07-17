@@ -318,6 +318,7 @@
   <ItemGroup>
     <Compile Include="Assets\Afroshaman pack\Documentation\Pack info.cs" />
     <Compile Include="Assets\Afroshaman pack\Scripts\Camposition.cs" />
+    <Compile Include="Assets\Configuration\EnemyPrefabConfiguration.cs" />
     <Compile Include="Assets\Configuration\Settings.cs" />
     <Compile Include="Assets\Configuration\WaveConfiguration.cs" />
     <Compile Include="Assets\Control\DamageReceiver.cs" />
@@ -326,6 +327,7 @@
     <Compile Include="Assets\Control\PlayerController.cs" />
     <Compile Include="Assets\Control\PlayerState.cs" />
     <Compile Include="Assets\Enemies\EnemyState.cs" />
+    <Compile Include="Assets\Enemies\PlayerAdvancedPursuer.cs" />
     <Compile Include="Assets\Enemies\Pursuer.cs" />
     <Compile Include="Assets\Hud\HealthDisplay.cs" />
     <Compile Include="Assets\PyroParticles\Demo\DemoScript.cs" />
@@ -337,6 +339,7 @@
     <Compile Include="Assets\PyroParticles\Prefab\Script\FireProjectileScript.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\MeteorSwarmScript.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\SingleLineAttribute.cs" />
+    <Compile Include="Assets\Scripts\DI\ContainerExtensions.cs" />
     <Compile Include="Assets\Scripts\DI\MainInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\PlayerInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\SettingsInstaller.cs" />
@@ -346,6 +349,7 @@
     <Compile Include="Assets\Spawn\SpawnManager.cs" />
     <Compile Include="Assets\Spawn\WaveManager.cs" />
     <Compile Include="Assets\Targeting\ITargetPicker.cs" />
+    <Compile Include="Assets\Targeting\PlayerAdvanceTargetPicker.cs" />
     <Compile Include="Assets\Targeting\PlayerPicker.cs" />
     <Compile Include="Assets\Utilities\CoroutinesWrapper.cs" />
     <Compile Include="Assets\Weapon\Bullet.cs" />

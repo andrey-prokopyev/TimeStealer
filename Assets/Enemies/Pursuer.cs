@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using Targeting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,7 +22,7 @@ namespace Enemies
             this.targetPicker = targetPicker;
             this.navMeshAgent = this.GetComponent<NavMeshAgent>();
 
-            signalBus.Subscribe<EnemyState.EnemyHealthChanged>(HealthChanged);
+            signalBus.Subscribe<EnemyState.EnemyHealthChanged>(this.HealthChanged);
         }
 
         private void HealthChanged(EnemyState.EnemyHealthChanged enemyHealthChanged)
@@ -41,23 +40,6 @@ namespace Enemies
             }
         }
 
-        private bool pursuing;
-        private void FixedUpdate()
-        {
-            if (this.pursuing)
-            {
-                return;
-            }
-
-            this.pursuing = true;
-
-            var target = this.targetPicker.PickFor(this.gameObject);
-
-            this.navMeshAgent.SetDestination(target.transform.position);
-
-            Debug.LogFormat("{0} is pursuing {1}", this.name, target.name);
-        }
-
         private void OnEnable()
         {
             this.StartCoroutine(this.Pursue());
@@ -69,7 +51,7 @@ namespace Enemies
             {
                 var target = this.targetPicker.PickFor(this.gameObject);
 
-                this.navMeshAgent.SetDestination(target.transform.position);
+                this.navMeshAgent.SetDestination(target);
 
                 yield return new WaitForSeconds(NavThrottlingIntervalSeconds);
             }
@@ -77,6 +59,7 @@ namespace Enemies
 
         public void OnDespawned()
         {
+            this.pool = null;
         }
 
         public void OnSpawned(IMemoryPool pool)
@@ -86,8 +69,12 @@ namespace Enemies
             this.pool = pool;
         }
 
-        public class Factory : PlaceholderFactory<Pursuer>
+        public class Factory : PlaceholderFactory<Pursuer>, IFactory<MonoBehaviour>
         {
+            public new MonoBehaviour Create()
+            {
+                return base.Create();
+            }
         }
 
         public class Pool : MonoPoolableMemoryPool<IMemoryPool, Pursuer>

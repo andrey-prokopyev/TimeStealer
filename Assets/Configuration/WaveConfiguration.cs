@@ -1,6 +1,4 @@
 ﻿using System;
-using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Configuration
 {
@@ -13,8 +11,8 @@ namespace Configuration
 
         public int MaxEnemies;
 
-        public GameObject EnemyPrefab;
-
         public float TimeBeforeWave;
+
+        public string EnemyType;
     }
 }

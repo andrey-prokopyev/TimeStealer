@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Configuration;
 using Enemies;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace Spawn
     {
         private Queue<GameObject> spawnQueue;
 
-        private float timeBetweenGenerations = 0f;
+        private float timeBetweenGenerations;
 
         private float nextGenerationTime = float.MaxValue;
 
@@ -20,11 +21,14 @@ namespace Spawn
 
         private WaveConfiguration currentWave;
 
-        private readonly Pursuer.Factory pursuerFactory;
+        private readonly IFactory<MonoBehaviour> pursuerFactory;
 
-        public DefaultEnemyGenerator(Pursuer.Factory pursuerFactory)
+        private readonly IFactory<MonoBehaviour> advancedPursuerFactory;
+
+        public DefaultEnemyGenerator(Pursuer.Factory pursuerFactory, PlayerAdvancedPursuer.Factory advancedPursuerFactory)
         {
             this.pursuerFactory = pursuerFactory;
+            this.advancedPursuerFactory = advancedPursuerFactory;
         }
 
         public void SetCurrentWave(WaveConfiguration wave)
@@ -58,7 +62,7 @@ namespace Spawn
                 return;
             }
 
-            var enemy = this.pursuerFactory.Create();
+            var enemy = this.Create(this.currentWave.EnemyType);
 
             enemy.gameObject.name = "Enemy" + this.enemiesLeft;
 
@@ -69,6 +73,20 @@ namespace Spawn
             this.CalculateNextGenerationTime();
 
             Debug.LogFormat("{3}. Spawned '{0}'. {1} enemies left. Next generation in {2}", enemy.gameObject.name, this.enemiesLeft, this.nextGenerationTime, DateTime.Now.ToString("O"));
+        }
+
+        private MonoBehaviour Create(string enemyType)
+        {
+            // TODO: remove switch
+            switch (enemyType)
+            {
+                case "Pursuer":
+                    return this.pursuerFactory.Create();
+                case "PlayerAdvancedPursuer":
+                    return this.advancedPursuerFactory.Create();
+                default:
+                    throw new Exception(string.Format("Unknown enemy type '{0}'", enemyType ?? "null"));
+            }
         }
 
         private void CalculateNextGenerationTime()

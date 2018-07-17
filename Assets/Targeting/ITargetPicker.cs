@@ -4,6 +4,6 @@ namespace Targeting
 {
     public interface ITargetPicker
     {
-        GameObject PickFor(GameObject pursuer);
+        Vector3 PickFor(GameObject pursuer);
     }
 }

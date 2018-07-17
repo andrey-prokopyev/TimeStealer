@@ -1,21 +1,20 @@
 ﻿using Control;
-using Enemies;
 using UnityEngine;
 
 namespace Targeting
 {
-    public class PlayerPicker : ITargetPicker
+    public class PlayerAdvanceTargetPicker : ITargetPicker
     {
         private readonly PlayerState playerState;
 
-        public PlayerPicker(PlayerState playerState)
+        public PlayerAdvanceTargetPicker(PlayerState playerState)
         {
             this.playerState = playerState;
         }
 
         public Vector3 PickFor(GameObject pursuer)
         {
-            return this.playerState.Position;
+            return this.playerState.Position + this.playerState.MoveDirection.normalized * this.playerState.Speed;
         }
     }
 }
