@@ -41,16 +41,18 @@ namespace Weapon
             }
             else
             {
-                if (this.weaponCharger.StopCharging() && this.weaponCharger.IsCharged)
+                var charge = this.weaponCharger.StopCharging();
+
+                if (charge.Current > 0f)
                 {
-                    this.Fire();
+                    this.Fire(charge);
                 }
             }
         }
 
-        private void Fire()
+        private void Fire(WeaponCharger.Charge charge)
         {
-            this.bulletFactory.Create(this.bulletSpeed, this.weaponCharger.CurrentCharge, this.playerState.LookDirection, this.weaponTransform.position);
+            this.bulletFactory.Create(this.bulletSpeed, charge, this.playerState.LookDirection, this.weaponTransform.position);
         }
 
         private void OnPlayerSpeedChanged(PlayerState.SpeedChanged speedChanged)

@@ -31,9 +31,10 @@ MonoBehaviour:
       BulletPrefab: {fileID: 1914374150808010, guid: 98f1740c6981206449c6020272cf79fa,
         type: 2}
     ChargeSettings:
-      InitialCharge: 1000
-      ChargeSpeed: 10
+      InitialCharge: 10
+      ChargeSpeed: 2
       MaxCharge: 5
+      RechargeSpeed: 0.5
     EnemyStateSettings:
       Health: 1
     EnemyPrefabConfiguration:

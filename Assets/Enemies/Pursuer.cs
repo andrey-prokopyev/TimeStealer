@@ -59,7 +59,6 @@ namespace Enemies
 
         public void OnDespawned()
         {
-            this.pool = null;
         }
 
         public void OnSpawned(IMemoryPool pool)

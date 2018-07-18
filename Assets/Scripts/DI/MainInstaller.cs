@@ -49,7 +49,8 @@ namespace DI
             this.Container.DeclareSignal<PlayerState.SpeedChanged>();
             this.Container.DeclareSignal<EnemyState.EnemyHealthChanged>();
             this.Container.DeclareSignal<PlayerController.Movement>();
-            this.Container.DeclareSignal<WeaponCharger.ChargingWeapon>();
+            this.Container.DeclareSignal<WeaponCharger.WeaponChargeChanged>();
+            this.Container.DeclareSignal<WeaponCharger.ChargeLeftChanged>();
         }
 
         private void InstallDamageTakers()

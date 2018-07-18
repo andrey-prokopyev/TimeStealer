@@ -5,21 +5,25 @@ using Zenject;
 
 namespace Weapon
 {
-    public class WeaponCharger : IFixedTickable
+    public class WeaponCharger : IFixedTickable, IInitializable
     {
+        private const float ThrottleChargeLeftChangedValue = 1f;
+
         private readonly IWeaponHolder weaponHolder;
 
         private readonly SignalBus bus;
 
         private readonly Settings settings;
 
-        private readonly float maxCharge;
+        private Charge currentCharge = Charge.Zero;
 
         private float chargeSpeed;
 
         private float chargeLeft;
 
-        private bool charging;
+        private float throttledChargeLeft;
+
+        private bool chargingWeapon;
 
         public WeaponCharger(Settings settings, IWeaponHolder weaponHolder, SignalBus bus)
         {
@@ -28,58 +32,93 @@ namespace Weapon
             this.settings = settings;
             this.chargeLeft = settings.InitialCharge;
             this.chargeSpeed = settings.ChargeSpeed;
-            this.maxCharge = settings.MaxCharge;
 
             this.bus.Subscribe<PlayerState.SpeedChanged>(this.OnPlayerSpeedChanged);
         }
 
-        public Charge CurrentCharge { get; private set; }
-
-        public bool IsCharged
+        private float ChargeLeft
         {
-            get { return this.CurrentCharge.Current > 0f; }
+            get { return this.chargeLeft; }
+            set
+            {
+                this.chargeLeft = value;
+                this.OnChargeLeftChanged();
+            }
+        }
+
+        private Charge CurrentCharge
+        {
+            get { return this.currentCharge; }
+            set
+            {
+                this.currentCharge = value;
+                this.OnCurrentChargeChanged();
+            }
+        }
+
+        public void Initialize()
+        {
+            this.OnChargeLeftChanged();
         }
 
         public void StartCharging()
         {
-            if (!this.charging)
+            if (!this.chargingWeapon)
             {
-                this.CurrentCharge = Charge.Zero;
-                this.charging = true;
-
+                this.chargingWeapon = true;
                 this.weaponHolder.OnHold = true;
             }
         }
 
-        public bool StopCharging()
+        public Charge StopCharging()
         {
-            if (this.charging)
+            if (this.chargingWeapon)
             {
-                this.charging = false;
-                this.chargeLeft -= this.CurrentCharge.Current;
-
+                this.chargingWeapon = false;
+                this.ChargeLeft -= this.CurrentCharge.Current;
+                var charge = this.CurrentCharge;
+                this.CurrentCharge = Charge.Zero;
                 this.weaponHolder.OnHold = false;
 
-                return true;
+                return charge;
             }
 
-            return false;
+            return Charge.Zero;
         }
 
         public void FixedTick()
         {
-            if (this.charging)
+            var deltaTime = Time.fixedDeltaTime;
+
+            this.ChargeWeapon(deltaTime);
+            this.Recharge(deltaTime);
+        }
+
+        private void ChargeWeapon(float deltaTime)
+        {
+            if (this.chargingWeapon)
             {
-                var newCharge = this.CurrentCharge.Current + this.chargeSpeed * Time.fixedDeltaTime;
+                var newCharge = this.CurrentCharge.Current + this.chargeSpeed * deltaTime;
 
-                if (newCharge < Mathf.Min(chargeLeft, this.maxCharge))
+                if (newCharge < Mathf.Min(this.chargeLeft, this.settings.MaxCharge))
                 {
-                    this.CurrentCharge = new Charge(newCharge, this.maxCharge);
-
-                    this.bus.Fire(new ChargingWeapon(this.CurrentCharge));
-
-                    Debug.LogFormat("Current charge: {0}", this.CurrentCharge.Current);
+                    this.CurrentCharge = new Charge(newCharge, this.settings.MaxCharge);
                 }
+            }
+        }
+
+        private void Recharge(float deltaTime)
+        {
+            if (this.chargingWeapon)
+            {
+                return;
+            }
+
+            var recharged = this.ChargeLeft + this.settings.RechargeSpeed * deltaTime;
+
+            if (recharged <= this.settings.InitialCharge)
+            {
+                this.ChargeLeft = recharged;
             }
         }
 
@@ -88,14 +127,42 @@ namespace Weapon
             this.chargeSpeed = this.settings.ChargeSpeed * speedChanged.SpeedAfter / speedChanged.InitialSpeed;
         }
 
-        public class ChargingWeapon
+        private void OnCurrentChargeChanged()
         {
-            public ChargingWeapon(Charge currentCharge)
+            this.bus.Fire(new WeaponChargeChanged(this.CurrentCharge));
+        }
+
+        private void OnChargeLeftChanged()
+        {
+            if (Mathf.Abs(this.throttledChargeLeft - this.chargeLeft) > ThrottleChargeLeftChangedValue)
+            {
+                this.throttledChargeLeft = this.chargeLeft;
+
+                this.bus.Fire(new ChargeLeftChanged(this.throttledChargeLeft, this.settings.InitialCharge));
+            }
+        }
+
+        public class WeaponChargeChanged
+        {
+            public WeaponChargeChanged(Charge currentCharge)
             {
                 this.Charge = currentCharge;
             }
 
             public Charge Charge { get; private set; }
+        }
+
+        public class ChargeLeftChanged
+        {
+            public ChargeLeftChanged(float chargeLeft, float initialCharge)
+            {
+                this.ChargeLeft = chargeLeft;
+                this.InitialCharge = initialCharge;
+            }
+
+            public float ChargeLeft { get; private set; }
+
+            public float InitialCharge { get; private set; }
         }
 
         [Serializable]
@@ -104,6 +171,7 @@ namespace Weapon
             public float InitialCharge;
             public float ChargeSpeed;
             public float MaxCharge;
+            public float RechargeSpeed;
         }
 
         public class Charge
@@ -112,8 +180,8 @@ namespace Weapon
 
             public Charge(float current, float max)
             {
-                Current = current;
-                Max = max;
+                this.Current = current;
+                this.Max = max;
             }
 
             public float Current { get; private set; }
@@ -121,7 +189,7 @@ namespace Weapon
 
             public override string ToString()
             {
-                return string.Format("Current: {0}, Max: {1}", Current, Max);
+                return string.Format("Current: {0}, Max: {1}", this.Current, this.Max);
             }
         }
     }

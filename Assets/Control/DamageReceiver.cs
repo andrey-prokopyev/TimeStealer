@@ -15,7 +15,7 @@ namespace Control
         [Inject]
         public void Construct(IDictionary<string, IDamageTaker> damageTakers)
         {
-            this.damageTaker = damageTakers[DamageTakerTag];
+            this.damageTaker = damageTakers[this.DamageTakerTag];
         }
 
         private void OnTriggerEnter(Collider other)

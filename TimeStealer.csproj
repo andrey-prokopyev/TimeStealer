@@ -329,7 +329,7 @@
     <Compile Include="Assets\Enemies\EnemyState.cs" />
     <Compile Include="Assets\Enemies\PlayerAdvancedPursuer.cs" />
     <Compile Include="Assets\Enemies\Pursuer.cs" />
-    <Compile Include="Assets\Hud\HealthDisplay.cs" />
+    <Compile Include="Assets\Hud\PlayerStateDisplay.cs" />
     <Compile Include="Assets\PyroParticles\Demo\DemoScript.cs" />
     <Compile Include="Assets\PyroParticles\Demo\DemoScriptEditor.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\FireBaseScript.cs" />

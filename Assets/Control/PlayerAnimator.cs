@@ -21,7 +21,7 @@ public class PlayerAnimator : IInitializable
     {
         this.bus.Subscribe<PlayerController.Movement>(this.OnPlayerMoved);
         this.bus.Subscribe<PlayerState.SpeedChanged>(this.OnPlayerSpeedChanged);
-        this.bus.Subscribe<WeaponCharger.ChargingWeapon>(this.OnPlayerCharging);
+        this.bus.Subscribe<WeaponCharger.WeaponChargeChanged>(this.OnPlayerCharging);
     }
 
     private void OnPlayerMoved(PlayerController.Movement movement)
@@ -35,7 +35,7 @@ public class PlayerAnimator : IInitializable
         this.animator.speed = speedChanged.SpeedAfter / speedChanged.InitialSpeed;
     }
 
-    private void OnPlayerCharging(WeaponCharger.ChargingWeapon weaponCharge)
+    private void OnPlayerCharging(WeaponCharger.WeaponChargeChanged weaponChargeChangedCharge)
     {
         this.UpdateStateIfChanged(PlayerAnimationState.Charging);
     }
