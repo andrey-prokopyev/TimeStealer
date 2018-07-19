@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Configuration;
 using Control;
 using Enemies;
 using Spawn;
 using Targeting;
-using UnityEngine;
 using Utilities;
 using Weapon;
 using Zenject;
@@ -30,6 +28,8 @@ namespace DI
             this.Container.BindInterfacesAndSelfTo<PlayerState>().AsSingle();
             this.Container.BindInterfacesAndSelfTo<EnemyState>().AsTransient();
 
+            this.Container.Bind<IFactory<string, IDamageTaker>>().To<DamageTakerFactory>().AsSingle();
+
             this.Container.BindInterfacesAndSelfTo<DefaultEnemyGenerator>().AsSingle();
 
             this.Container.BindInterfacesAndSelfTo<WaveManager>().AsSingle().WithArguments(this.gameSettings.WaveConfigurations);
@@ -39,7 +39,6 @@ namespace DI
             this.Container.BindInterfacesAndSelfTo<SpawnManager>().AsSingle();
 
             this.InstallSignals();
-            this.InstallDamageTakers();
         }
 
         private void InstallSignals()
@@ -51,16 +50,7 @@ namespace DI
             this.Container.DeclareSignal<PlayerController.Movement>();
             this.Container.DeclareSignal<WeaponCharger.WeaponChargeChanged>();
             this.Container.DeclareSignal<WeaponCharger.ChargeLeftChanged>();
-        }
-
-        private void InstallDamageTakers()
-        {
-            this.Container.Bind<IDictionary<string, IDamageTaker>>().FromMethod(c =>
-                new Dictionary<string, IDamageTaker>
-                {
-                    {"Bullet", c.Container.Resolve<EnemyState>()},
-                    {"Enemy", c.Container.Resolve<PlayerState>()}
-                }).AsSingle();
+            this.Container.DeclareSignal<Pursuer.PursuerSpawned>();
         }
 
         private void InstallEnemyPrefab<TEnemy, TFactory, TPool>(int poolSize) where TFactory : PlaceholderFactory<TEnemy> where TPool : MemoryPool<IMemoryPool, TEnemy> where TEnemy : IPoolable<IMemoryPool>

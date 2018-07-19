@@ -1,19 +1,28 @@
 ﻿using System;
 using Weapon;
 using Zenject;
+using Debug = UnityEngine.Debug;
 
 namespace Enemies
 {
     public class EnemyState : IDamageTaker
     {
-        private readonly SignalBus signalBus;
+        private static int counter;
+
+        private readonly SignalBus bus;
+
+        private readonly Settings settings;
 
         private float health;
 
-        public EnemyState(SignalBus signalBus, Settings settings)
+        public EnemyState(SignalBus bus, Settings settings)
         {
-            this.signalBus = signalBus;
-            this.health = settings.Health;
+            counter++;
+
+            Debug.LogFormat("Created {0} EnemyStates", counter);
+
+            this.bus = bus;
+            this.settings = settings;
         }
 
         public float TakeDamage(float damage, string damagerReceiverName)
@@ -21,7 +30,7 @@ namespace Enemies
             var healthBefore = this.health;
             var damageLeft = 0f;
 
-            if (damage > this.health)
+            if (damage >= this.health)
             {
                 damageLeft = damage - this.health;
                 this.health = 0f;
@@ -31,9 +40,14 @@ namespace Enemies
                 this.health -= damage;
             }
 
-            this.signalBus.Fire(new EnemyHealthChanged(damagerReceiverName, healthBefore, this.health));
+            this.bus.Fire(new EnemyHealthChanged(damagerReceiverName, healthBefore, this.health));
 
             return damageLeft;
+        }
+
+        public void Reinitialize()
+        {
+            this.health = this.settings.Health;
         }
 
         [Serializable]

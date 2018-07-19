@@ -7,6 +7,6 @@ namespace Spawn
     public interface IEnemyGenerator
     {
         void SetQueue(Queue<GameObject> spawnQueue);
-        void SetCurrentWave(WaveConfiguration wave);
+        void SetCurrentWave(WaveConfiguration wave, int currentWaveNumber);
     }
 }

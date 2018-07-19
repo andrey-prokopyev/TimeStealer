@@ -25,7 +25,7 @@ namespace Control
         {
             if (!this.playerState.OnHold)
             {
-                var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * this.playerState.Speed;
+                var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * this.playerState.Speed;
                 var direction = this.TransformInputToViewPort(input);
 
                 this.playerState.MoveDirection = direction;

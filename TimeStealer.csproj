@@ -340,6 +340,7 @@
     <Compile Include="Assets\PyroParticles\Prefab\Script\MeteorSwarmScript.cs" />
     <Compile Include="Assets\PyroParticles\Prefab\Script\SingleLineAttribute.cs" />
     <Compile Include="Assets\Scripts\DI\ContainerExtensions.cs" />
+    <Compile Include="Assets\Scripts\DI\DamageTakerFactory.cs" />
     <Compile Include="Assets\Scripts\DI\MainInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\PlayerInstaller.cs" />
     <Compile Include="Assets\Scripts\DI\SettingsInstaller.cs" />

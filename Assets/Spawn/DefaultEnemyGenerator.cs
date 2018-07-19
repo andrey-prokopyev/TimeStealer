@@ -11,6 +11,10 @@ namespace Spawn
 {
     public class DefaultEnemyGenerator : IEnemyGenerator, ITickable
     {
+        private readonly IFactory<MonoBehaviour> pursuerFactory;
+
+        private readonly IFactory<MonoBehaviour> advancedPursuerFactory;
+
         private Queue<GameObject> spawnQueue;
 
         private float timeBetweenGenerations;
@@ -21,9 +25,7 @@ namespace Spawn
 
         private WaveConfiguration currentWave;
 
-        private readonly IFactory<MonoBehaviour> pursuerFactory;
-
-        private readonly IFactory<MonoBehaviour> advancedPursuerFactory;
+        private int currentWaveNumber;
 
         public DefaultEnemyGenerator(Pursuer.Factory pursuerFactory, PlayerAdvancedPursuer.Factory advancedPursuerFactory)
         {
@@ -31,10 +33,11 @@ namespace Spawn
             this.advancedPursuerFactory = advancedPursuerFactory;
         }
 
-        public void SetCurrentWave(WaveConfiguration wave)
+        public void SetCurrentWave(WaveConfiguration wave, int currentWaveNumber)
         {
             this.currentWave = wave;
             this.enemiesLeft = wave.MaxEnemies;
+            this.currentWaveNumber = currentWaveNumber;
 
             this.CalculateNextGenerationTime();
         }
@@ -64,7 +67,7 @@ namespace Spawn
 
             var enemy = this.Create(this.currentWave.EnemyType);
 
-            enemy.gameObject.name = "Enemy" + this.enemiesLeft;
+            enemy.gameObject.name = string.Format("Enemy-{0}-{1}-{2}", this.currentWave.EnemyType, this.currentWaveNumber, this.enemiesLeft);
 
             this.spawnQueue.Enqueue(enemy.gameObject);
 

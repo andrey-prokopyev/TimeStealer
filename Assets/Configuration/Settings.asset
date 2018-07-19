@@ -27,7 +27,7 @@ MonoBehaviour:
       Health: 100
       MoveSpeed: 5
     WeaponSettings:
-      BulletSpeed: 15
+      BulletSpeed: 5
       BulletPrefab: {fileID: 1914374150808010, guid: 98f1740c6981206449c6020272cf79fa,
         type: 2}
     ChargeSettings:

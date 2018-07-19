@@ -71,7 +71,7 @@ namespace Spawn
 
             Debug.LogFormat("Wave {0} started!", this.currentWaveNumber);
 
-            this.enemyGenerator.SetCurrentWave(currentWave);
+            this.enemyGenerator.SetCurrentWave(currentWave, this.currentWaveNumber);
         }
     }
 }

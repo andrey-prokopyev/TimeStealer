@@ -16,13 +16,16 @@ namespace Enemies
 
         private IMemoryPool pool;
 
+        private SignalBus bus;
+
         [Inject]
-        public void Construct(ITargetPicker targetPicker, SignalBus signalBus)
+        public void Construct(ITargetPicker targetPicker, SignalBus bus)
         {
             this.targetPicker = targetPicker;
+            this.bus = bus;
             this.navMeshAgent = this.GetComponent<NavMeshAgent>();
 
-            signalBus.Subscribe<EnemyState.EnemyHealthChanged>(this.HealthChanged);
+            bus.Subscribe<EnemyState.EnemyHealthChanged>(this.HealthChanged);
         }
 
         private void HealthChanged(EnemyState.EnemyHealthChanged enemyHealthChanged)
@@ -32,7 +35,8 @@ namespace Enemies
                 return;
             }
 
-            Debug.LogFormat("{0}'s health changed from {1} to {2}", enemyHealthChanged.Name, enemyHealthChanged.HealthBefore, enemyHealthChanged.HealthAfter);
+            Debug.LogFormat("{0}'s health changed from {1} to {2}", enemyHealthChanged.Name,
+                enemyHealthChanged.HealthBefore, enemyHealthChanged.HealthAfter);
 
             if (enemyHealthChanged.Killed)
             {
@@ -66,6 +70,8 @@ namespace Enemies
             Debug.LogFormat("Spawned {0}, pull != null = {1}", this.gameObject.name, pool != null);
 
             this.pool = pool;
+
+            this.bus.Fire(new PursuerSpawned(this.gameObject.name));
         }
 
         public class Factory : PlaceholderFactory<Pursuer>, IFactory<MonoBehaviour>
@@ -83,6 +89,16 @@ namespace Enemies
                 base.OnSpawned(item);
                 item.gameObject.SetActive(false);
             }
+        }
+
+        public class PursuerSpawned
+        {
+            public PursuerSpawned(string name)
+            {
+                this.Name = name;
+            }
+
+            public string Name { get; private set; }
         }
     }
 }

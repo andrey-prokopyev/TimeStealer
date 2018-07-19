@@ -43,6 +43,10 @@ namespace Control
             return 0f;
         }
 
+        public void Reinitialize()
+        {
+        }
+
         private void UpdateSpeed()
         {
             var speedBefore = this.Speed;

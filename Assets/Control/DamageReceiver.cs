@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Weapon;
@@ -13,9 +15,10 @@ namespace Control
         private IDamageTaker damageTaker;
 
         [Inject]
-        public void Construct(IDictionary<string, IDamageTaker> damageTakers)
+        public void Construct(IFactory<string, IDamageTaker> damageTakerFactory, SignalBus bus)
         {
-            this.damageTaker = damageTakers[this.DamageTakerTag];
+            this.damageTaker = damageTakerFactory.Create(this.DamageTakerTag);
+            bus.Subscribe<Pursuer.PursuerSpawned>(this.OnEnemySpawned);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -28,6 +31,16 @@ namespace Control
                 Assert.IsNotNull(damager, string.Format("Damager taker {0} should contain Damager component", other.gameObject.name));
 
                 this.damageTaker.TakeDamage(damager.Damage, this.gameObject.name);
+            }
+        }
+
+        private void OnEnemySpawned(Pursuer.PursuerSpawned enemySpawned)
+        {
+            if (enemySpawned.Name == this.gameObject.name)
+            {
+                this.damageTaker.Reinitialize();
+
+                Debug.LogFormat("Reinitialized '{0}'", this.gameObject.name);
             }
         }
     }
