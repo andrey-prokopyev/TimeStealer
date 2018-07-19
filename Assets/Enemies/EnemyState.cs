@@ -18,14 +18,12 @@ namespace Enemies
             this.settings = settings;
         }
 
-        public float TakeDamage(float damage, string damagerReceiverName)
+        public void TakeDamage(float damage, string damagerReceiverName)
         {
             var healthBefore = this.health;
-            var damageLeft = 0f;
 
             if (damage >= this.health)
             {
-                damageLeft = damage - this.health;
                 this.health = 0f;
             }
             else
@@ -34,8 +32,6 @@ namespace Enemies
             }
 
             this.bus.Fire(new EnemyHealthChanged(damagerReceiverName, healthBefore, this.health));
-
-            return damageLeft;
         }
 
         public void Reinitialize()

@@ -9,8 +9,6 @@ namespace Weapon
     {
         private const float ThrottleChargeLeftChangedValue = 1f;
 
-        private readonly IWeaponHolder weaponHolder;
-
         private readonly SignalBus bus;
 
         private readonly Settings settings;
@@ -25,9 +23,8 @@ namespace Weapon
 
         private bool chargingWeapon;
 
-        public WeaponCharger(Settings settings, IWeaponHolder weaponHolder, SignalBus bus)
+        public WeaponCharger(Settings settings, SignalBus bus)
         {
-            this.weaponHolder = weaponHolder;
             this.bus = bus;
             this.settings = settings;
             this.chargeLeft = settings.InitialCharge;
@@ -66,7 +63,6 @@ namespace Weapon
             if (!this.chargingWeapon)
             {
                 this.chargingWeapon = true;
-                this.weaponHolder.OnHold = true;
             }
         }
 
@@ -78,7 +74,6 @@ namespace Weapon
                 this.ChargeLeft -= this.CurrentCharge.Current;
                 var charge = this.CurrentCharge;
                 this.CurrentCharge = Charge.Zero;
-                this.weaponHolder.OnHold = false;
 
                 return charge;
             }
@@ -186,6 +181,11 @@ namespace Weapon
 
             public float Current { get; private set; }
             public float Max { get; private set; }
+
+            public bool IsCharging
+            {
+                get { return this.Current > 0f; }
+            }
 
             public override string ToString()
             {

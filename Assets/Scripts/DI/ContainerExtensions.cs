@@ -1,5 +1,4 @@
-﻿using Enemies;
-using Zenject;
+﻿using Zenject;
 
 namespace DI
 {

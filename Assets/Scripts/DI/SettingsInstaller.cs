@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Configuration;
-using Control;
+﻿using Configuration;
 using UnityEngine;
 using Zenject;
 
@@ -20,6 +18,10 @@ namespace DI
             this.Container.BindInstance(this.GameSettings.EnemyStateSettings);
 
             this.Container.BindInstance(this.GameSettings.ChargeSettings);
+
+            this.Container.BindInstance(this.GameSettings.WaveConfigurations);
+
+            this.Container.BindInstance(this.GameSettings.WeaponSettings);
         }
     }
 }

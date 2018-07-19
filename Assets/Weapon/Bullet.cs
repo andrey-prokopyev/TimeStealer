@@ -14,7 +14,6 @@ namespace Weapon
             this.pool = pool;
 
             this.transform.position = position;
-            this.transform.rotation = Quaternion.LookRotation(direction);
 
             var scaleFactor = charge.Current / charge.Max;
             this.transform.localScale = new Vector3(scaleFactor, scaleFactor, scaleFactor);

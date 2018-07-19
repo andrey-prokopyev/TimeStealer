@@ -15,11 +15,11 @@ namespace Hud
         public Text WeaponCharge;
 
         [Inject]
-        public void Construct(SignalBus signalBus)
+        public void Construct(SignalBus bus)
         {
-            signalBus.Subscribe<PlayerState.PlayerHealthChanged>(this.OnHealthChanged);
-            signalBus.Subscribe<WeaponCharger.ChargeLeftChanged>(this.OnChargeLeftChanged);
-            signalBus.Subscribe<WeaponCharger.WeaponChargeChanged>(this.OnWeaponChargeChanged);
+            bus.Subscribe<PlayerState.PlayerHealthChanged>(this.OnHealthChanged);
+            bus.Subscribe<WeaponCharger.ChargeLeftChanged>(this.OnChargeLeftChanged);
+            bus.Subscribe<WeaponCharger.WeaponChargeChanged>(this.OnWeaponChargeChanged);
         }
 
         private void OnHealthChanged(PlayerState.PlayerHealthChanged playerHealthChanged)

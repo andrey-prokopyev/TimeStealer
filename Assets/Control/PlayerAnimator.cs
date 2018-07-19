@@ -1,58 +1,60 @@
-﻿using Control;
-using UnityEngine;
+﻿using UnityEngine;
 using Weapon;
 using Zenject;
 
-public class PlayerAnimator : IInitializable
+namespace Control
 {
-    private readonly Animator animator;
-
-    private readonly SignalBus bus;
-
-    private string currentState = PlayerAnimationState.Idle;
-
-    public PlayerAnimator(Animator animator, SignalBus bus)
+    public class PlayerAnimator : IInitializable
     {
-        this.animator = animator;
-        this.bus = bus;
-    }
+        private readonly Animator animator;
 
-    public void Initialize()
-    {
-        this.bus.Subscribe<PlayerController.Movement>(this.OnPlayerMoved);
-        this.bus.Subscribe<PlayerState.SpeedChanged>(this.OnPlayerSpeedChanged);
-        this.bus.Subscribe<WeaponCharger.WeaponChargeChanged>(this.OnPlayerCharging);
-    }
+        private readonly SignalBus bus;
 
-    private void OnPlayerMoved(PlayerController.Movement movement)
-    {
-        var newState = movement.Direction.sqrMagnitude > 0 ? PlayerAnimationState.Moving : PlayerAnimationState.Idle;
-        this.UpdateStateIfChanged(newState);
-    }
+        private string currentState = PlayerAnimationState.Idle;
 
-    private void OnPlayerSpeedChanged(PlayerState.SpeedChanged speedChanged)
-    {
-        this.animator.speed = speedChanged.SpeedAfter / speedChanged.InitialSpeed;
-    }
-
-    private void OnPlayerCharging(WeaponCharger.WeaponChargeChanged weaponChargeChangedCharge)
-    {
-        this.UpdateStateIfChanged(PlayerAnimationState.Charging);
-    }
-
-    private void UpdateStateIfChanged(string newState)
-    {
-        if (this.currentState != newState)
+        public PlayerAnimator(Animator animator, SignalBus bus)
         {
-            this.currentState = newState;
-            this.animator.SetTrigger(this.currentState);
+            this.animator = animator;
+            this.bus = bus;
         }
-    }
 
-    private class PlayerAnimationState
-    {
-        public const string Idle = "idle";
-        public const string Moving = "run";
-        public const string Charging = "cast magic";
+        public void Initialize()
+        {
+            this.bus.Subscribe<PlayerController.Movement>(this.OnPlayerMoved);
+            this.bus.Subscribe<PlayerState.SpeedChanged>(this.OnPlayerSpeedChanged);
+            this.bus.Subscribe<WeaponCharger.WeaponChargeChanged>(this.OnPlayerCharging);
+        }
+
+        private void OnPlayerMoved(PlayerController.Movement movement)
+        {
+            var newState = movement.Direction.sqrMagnitude > 0 ? PlayerAnimationState.Moving : PlayerAnimationState.Idle;
+            this.UpdateStateIfChanged(newState);
+        }
+
+        private void OnPlayerSpeedChanged(PlayerState.SpeedChanged speedChanged)
+        {
+            this.animator.speed = speedChanged.SpeedAfter / speedChanged.InitialSpeed;
+        }
+
+        private void OnPlayerCharging(WeaponCharger.WeaponChargeChanged weaponChargeChangedCharge)
+        {
+            this.UpdateStateIfChanged(PlayerAnimationState.Charging);
+        }
+
+        private void UpdateStateIfChanged(string newState)
+        {
+            if (this.currentState != newState)
+            {
+                this.currentState = newState;
+                this.animator.SetTrigger(this.currentState);
+            }
+        }
+
+        private class PlayerAnimationState
+        {
+            public const string Idle = "idle";
+            public const string Moving = "run";
+            public const string Charging = "cast magic";
+        }
     }
 }

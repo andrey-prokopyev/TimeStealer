@@ -17,28 +17,35 @@ namespace DI
 
         public override void InstallBindings()
         {
-            this.Container.Bind<ITargetPicker>().To<PlayerPicker>().AsSingle().WhenInjectedExactlyInto<Pursuer>();
-            this.Container.Bind<ITargetPicker>().To<PlayerAdvanceTargetPicker>().AsSingle().WhenInjectedExactlyInto<PlayerAdvancedPursuer>();
-
-            var poolSize = this.gameSettings.WaveConfigurations.Max(wc => wc.MaxEnemies);
-
-            this.InstallEnemyPrefab<Pursuer, Pursuer.Factory, Pursuer.Pool>(poolSize);
-            this.InstallEnemyPrefab<PlayerAdvancedPursuer, PlayerAdvancedPursuer.Factory, PlayerAdvancedPursuer.Pool>(poolSize);
+            this.InstallTargetPickers();
+            this.InstallEnemyPrefabs();
+            this.InstallSignals();
+            this.InstallSpawnManagement();
 
             this.Container.BindInterfacesAndSelfTo<PlayerState>().AsSingle();
             this.Container.BindInterfacesAndSelfTo<EnemyState>().AsTransient();
-
             this.Container.Bind<IFactory<string, IDamageTaker>>().To<DamageTakerFactory>().AsSingle();
-
-            this.Container.BindInterfacesAndSelfTo<DefaultEnemyGenerator>().AsSingle();
-
-            this.Container.BindInterfacesAndSelfTo<WaveManager>().AsSingle().WithArguments(this.gameSettings.WaveConfigurations);
-
+            this.Container.BindInterfacesAndSelfTo<WaveManager>().AsSingle();
             this.Container.Bind<CoroutinesWrapper>().FromNewComponentOnNewGameObject().AsSingle();
+        }
 
+        private void InstallSpawnManagement()
+        {
             this.Container.BindInterfacesAndSelfTo<SpawnManager>().AsSingle();
+            this.Container.BindInterfacesAndSelfTo<DefaultEnemyGenerator>().AsSingle();
+        }
 
-            this.InstallSignals();
+        private void InstallTargetPickers()
+        {
+            this.Container.Bind<ITargetPicker>().To<PlayerPicker>().AsSingle().WhenInjectedExactlyInto<Pursuer>();
+            this.Container.Bind<ITargetPicker>().To<PlayerAdvanceTargetPicker>().AsSingle().WhenInjectedExactlyInto<PlayerAdvancedPursuer>();
+        }
+
+        private void InstallEnemyPrefabs()
+        {
+            var poolSize = this.gameSettings.WaveConfigurations.Max(wc => wc.MaxEnemies);
+            this.InstallEnemyPrefab<Pursuer, Pursuer.Factory, Pursuer.Pool>(poolSize);
+            this.InstallEnemyPrefab<PlayerAdvancedPursuer, PlayerAdvancedPursuer.Factory, PlayerAdvancedPursuer.Pool>(poolSize);
         }
 
         private void InstallSignals()

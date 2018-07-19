@@ -8,7 +8,7 @@ namespace Enemies
 {
     public class Pursuer : MonoBehaviour, IPoolable<IMemoryPool>
     {
-        private const float NavThrottlingIntervalSeconds = 1f;
+        private const float NavThrottlingInterval = 1f;
 
         private ITargetPicker targetPicker;
 
@@ -35,8 +35,7 @@ namespace Enemies
                 return;
             }
 
-            Debug.LogFormat("{0}'s health changed from {1} to {2}", enemyHealthChanged.Name,
-                enemyHealthChanged.HealthBefore, enemyHealthChanged.HealthAfter);
+            Debug.LogFormat("{0}'s health changed from {1} to {2}", enemyHealthChanged.Name, enemyHealthChanged.HealthBefore, enemyHealthChanged.HealthAfter);
 
             if (enemyHealthChanged.Killed)
             {
@@ -57,7 +56,7 @@ namespace Enemies
 
                 this.navMeshAgent.SetDestination(target);
 
-                yield return new WaitForSeconds(NavThrottlingIntervalSeconds);
+                yield return new WaitForSeconds(NavThrottlingInterval);
             }
         }
 
@@ -74,12 +73,8 @@ namespace Enemies
             this.bus.Fire(new PursuerSpawned(this.gameObject.name));
         }
 
-        public class Factory : PlaceholderFactory<Pursuer>, IFactory<MonoBehaviour>
+        public class Factory : PlaceholderFactory<Pursuer>
         {
-            public new MonoBehaviour Create()
-            {
-                return base.Create();
-            }
         }
 
         public class Pool : MonoPoolableMemoryPool<IMemoryPool, Pursuer>

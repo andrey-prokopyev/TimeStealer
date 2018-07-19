@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Configuration;
 using Enemies;
 using UnityEngine;
@@ -11,9 +10,9 @@ namespace Spawn
 {
     public class DefaultEnemyGenerator : IEnemyGenerator, ITickable
     {
-        private readonly IFactory<MonoBehaviour> pursuerFactory;
+        private readonly PlaceholderFactory<Pursuer> pursuerFactory;
 
-        private readonly IFactory<MonoBehaviour> advancedPursuerFactory;
+        private readonly PlaceholderFactory<PlayerAdvancedPursuer> advancedPursuerFactory;
 
         private Queue<GameObject> spawnQueue;
 
@@ -49,19 +48,8 @@ namespace Spawn
 
         public void Tick()
         {
-            if (this.spawnQueue == null)
+            if (!this.IsReadyToGenerate())
             {
-                return;
-            }
-
-            if (this.enemiesLeft <= 0)
-            {
-                return;
-            }
-
-            if (this.timeBetweenGenerations <= this.nextGenerationTime)
-            {
-                this.timeBetweenGenerations += Time.deltaTime;
                 return;
             }
 
@@ -75,21 +63,44 @@ namespace Spawn
 
             this.CalculateNextGenerationTime();
 
-            Debug.LogFormat("{3}. Spawned '{0}'. {1} enemies left. Next generation in {2}", enemy.gameObject.name, this.enemiesLeft, this.nextGenerationTime, DateTime.Now.ToString("O"));
+            Debug.LogFormat("Spawned '{0}'. {1} enemies left. Next generation in {2}", enemy.gameObject.name, this.enemiesLeft, this.nextGenerationTime);
         }
 
         private MonoBehaviour Create(string enemyType)
         {
-            // TODO: remove switch
-            switch (enemyType)
+            // TODO: remove ifs
+            if (enemyType == typeof(Pursuer).Name)
             {
-                case "Pursuer":
-                    return this.pursuerFactory.Create();
-                case "PlayerAdvancedPursuer":
-                    return this.advancedPursuerFactory.Create();
-                default:
-                    throw new Exception(string.Format("Unknown enemy type '{0}'", enemyType ?? "null"));
+                return this.pursuerFactory.Create();
             }
+
+            if (enemyType == typeof(PlayerAdvancedPursuer).Name)
+            {
+                return this.advancedPursuerFactory.Create();
+            }
+
+            throw new ArgumentException(string.Format("Unknown enemy type '{0}'", enemyType ?? "null"), "enemyType");
+        }
+
+        private bool IsReadyToGenerate()
+        {
+            if (this.spawnQueue == null)
+            {
+                return false;
+            }
+
+            if (this.enemiesLeft <= 0)
+            {
+                return false;
+            }
+
+            if (this.timeBetweenGenerations <= this.nextGenerationTime)
+            {
+                this.timeBetweenGenerations += Time.deltaTime;
+                return false;
+            }
+
+            return true;
         }
 
         private void CalculateNextGenerationTime()

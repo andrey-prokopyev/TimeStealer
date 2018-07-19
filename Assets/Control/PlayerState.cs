@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Control
 {
-    public class PlayerState : IDamageTaker, IWeaponHolder
+    public class PlayerState : IDamageTaker
     {
         private readonly SignalBus bus;
 
@@ -19,6 +19,8 @@ namespace Control
             this.bus = bus;
             this.health = settings.Health;
             this.Speed = settings.MoveSpeed;
+
+            this.bus.Subscribe<WeaponCharger.WeaponChargeChanged>(this.OnWeaponCharging);
         }
 
         public Vector3 LookDirection { get; set; }
@@ -27,11 +29,11 @@ namespace Control
 
         public Vector3 Position { get; set; }
 
-        public bool OnHold { get; set; }
+        public bool Freezed { get; private set; }
 
         public float Speed { get; private set; }
 
-        public float TakeDamage(float damage, string damagerReceiverName)
+        public void TakeDamage(float damage, string damagerReceiverName)
         {
             var healthBefore = this.health;
             this.health -= damage;
@@ -39,12 +41,15 @@ namespace Control
             this.bus.Fire(new PlayerHealthChanged(healthBefore, this.health, this.settings.Health));
 
             this.UpdateSpeed();
-
-            return 0f;
         }
 
         public void Reinitialize()
         {
+        }
+
+        private void OnWeaponCharging(WeaponCharger.WeaponChargeChanged chargeChanged)
+        {
+            this.Freezed = chargeChanged.Charge.IsCharging;
         }
 
         private void UpdateSpeed()

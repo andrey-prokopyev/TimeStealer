@@ -867,7 +867,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1091912547}
   m_LocalRotation: {x: 0.36889648, y: 0.17953722, z: 0.07285613, w: -0.90905106}
-  m_LocalPosition: {x: 99.06234, y: -21.649796, z: 84.335434}
+  m_LocalPosition: {x: 163.41072, y: -68.24061, z: 15.920853}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1773,7 +1773,7 @@ MonoBehaviour:
   _scriptableObjectInstallers:
   - {fileID: 11400000, guid: b98780e21cf258a49b98ad74bb6c59a5, type: 2}
   _autoRun: 1
-  _parentNewObjectsUnderRoot: 0
+  _parentNewObjectsUnderRoot: 1
   _contractNames: []
   _parentContractNames: []
 --- !u!4 &1478337898

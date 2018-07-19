@@ -27,7 +27,7 @@ namespace DI
                 return this.container.Resolve<PlayerState>();
             }
 
-            throw new Exception(string.Format("Unknown DamageTaker tag '{0}'", tag));
+            throw new Exception(string.Format("Unknown damage taker tag '{0}'", tag));
         }
     }
 }

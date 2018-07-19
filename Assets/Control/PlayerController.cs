@@ -23,20 +23,22 @@ namespace Control
 
         public void Tick()
         {
-            if (!this.playerState.OnHold)
+            if (this.playerState.Freezed)
             {
-                var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * this.playerState.Speed;
-                var direction = this.TransformInputToViewPort(input);
-
-                this.playerState.MoveDirection = direction;
-
-                this.controller.SimpleMove(direction);
-                this.controller.transform.rotation = Quaternion.LookRotation(this.playerState.LookDirection);
-
-                this.playerState.Position = this.controller.gameObject.transform.position;
-
-                this.bus.Fire(new Movement(direction));
+                return;
             }
+
+            var input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * this.playerState.Speed;
+            var direction = this.TransformInputToViewPort(input);
+
+            this.playerState.MoveDirection = direction;
+
+            this.controller.SimpleMove(direction);
+            this.controller.transform.rotation = Quaternion.LookRotation(this.playerState.LookDirection);
+
+            this.playerState.Position = this.controller.gameObject.transform.position;
+
+            this.bus.Fire(new Movement(direction));
         }
 
         private Vector3 TransformInputToViewPort(Vector3 input)

@@ -43,7 +43,7 @@ namespace Weapon
             {
                 var charge = this.weaponCharger.StopCharging();
 
-                if (charge.Current > 0f)
+                if (charge.IsCharging)
                 {
                     this.Fire(charge);
                 }

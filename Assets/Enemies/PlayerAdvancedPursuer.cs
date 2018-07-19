@@ -1,16 +1,11 @@
-﻿using UnityEngine;
-using Zenject;
+﻿using Zenject;
 
 namespace Enemies
 {
     public class PlayerAdvancedPursuer : Pursuer
     {
-        public new class Factory : PlaceholderFactory<PlayerAdvancedPursuer>, IFactory<MonoBehaviour>
+        public new class Factory : PlaceholderFactory<PlayerAdvancedPursuer>
         {
-            public new MonoBehaviour Create()
-            {
-                return base.Create();
-            }
         }
 
         public new class Pool : MonoPoolableMemoryPool<IMemoryPool, PlayerAdvancedPursuer>

@@ -19,8 +19,7 @@ namespace Spawn
 
         private int enemiesAlive;
 
-        public WaveManager(IEnemyGenerator enemyGenerator, WaveConfiguration[] waveConfigurations,
-            CoroutinesWrapper coroutinesWrapper, SignalBus bus)
+        public WaveManager(IEnemyGenerator enemyGenerator, WaveConfiguration[] waveConfigurations, CoroutinesWrapper coroutinesWrapper, SignalBus bus)
         {
             this.enemyGenerator = enemyGenerator;
             this.waveConfigurations = waveConfigurations;
@@ -39,7 +38,6 @@ namespace Spawn
             if (healthChanged.Killed)
             {
                 this.enemiesAlive--;
-
                 this.CheckWaveFinished();
             }
         }
@@ -60,7 +58,7 @@ namespace Spawn
 
             if (this.waveConfigurations.Length <= this.currentWaveNumber)
             {
-                Debug.LogFormat("Wave {0} does not exist. Stopping enemy generation", this.currentWaveNumber);
+                Debug.LogWarningFormat("Wave {0} does not exist. Stopping enemy generation", this.currentWaveNumber);
                 yield break;
             }
 

@@ -16,7 +16,7 @@ namespace Spawn
 
         private readonly IEnemyGenerator enemyGenerator;
 
-        private Transform[] spawnPoints;
+        private readonly Transform[] spawnPoints;
 
         public SpawnManager(IEnemyGenerator enemyGenerator, CoroutinesWrapper coroutinesWrapper)
         {
@@ -36,14 +36,14 @@ namespace Spawn
         {
             while (true)
             {
-                if (spawnQueue.Count == 0)
+                if (this.spawnQueue.Count == 0)
                 {
                     yield return new WaitForSeconds(1f);
                     continue;
                 }
 
-                var spawned = spawnQueue.Dequeue();
-                var spawnPoint = spawnPoints[Random.Range(0, this.spawnPoints.Length)];
+                var spawned = this.spawnQueue.Dequeue();
+                var spawnPoint = this.spawnPoints[Random.Range(0, this.spawnPoints.Length)];
 
                 var navMeshAgent = spawned.GetComponent<NavMeshAgent>();
                 navMeshAgent.Warp(spawnPoint.position);
