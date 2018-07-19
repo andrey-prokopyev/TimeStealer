@@ -1,14 +1,11 @@
 ﻿using System;
 using Weapon;
 using Zenject;
-using Debug = UnityEngine.Debug;
 
 namespace Enemies
 {
     public class EnemyState : IDamageTaker
     {
-        private static int counter;
-
         private readonly SignalBus bus;
 
         private readonly Settings settings;
@@ -17,10 +14,6 @@ namespace Enemies
 
         public EnemyState(SignalBus bus, Settings settings)
         {
-            counter++;
-
-            Debug.LogFormat("Created {0} EnemyStates", counter);
-
             this.bus = bus;
             this.settings = settings;
         }

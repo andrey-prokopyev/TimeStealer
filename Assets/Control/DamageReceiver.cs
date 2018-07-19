@@ -23,7 +23,7 @@ namespace Control
 
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag(DamageTakerTag))
+            if (other.CompareTag(this.DamageTakerTag))
             {
                 Debug.LogFormat("{0} received damage from {1}", this.gameObject.name, other.name);
 
@@ -39,8 +39,6 @@ namespace Control
             if (enemySpawned.Name == this.gameObject.name)
             {
                 this.damageTaker.Reinitialize();
-
-                Debug.LogFormat("Reinitialized '{0}'", this.gameObject.name);
             }
         }
     }
