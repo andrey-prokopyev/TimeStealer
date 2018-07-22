@@ -23,6 +23,11 @@ MonoBehaviour:
       MaxEnemies: 10
       TimeBeforeWave: 5
       EnemyType: PlayerAdvancedPursuer
+    - MinTimeBetweenSpawns: 1
+      MaxTimeBetweenSpawns: 3
+      MaxEnemies: 20
+      TimeBeforeWave: 5
+      EnemyType: PlayerAdvancedPursuer
     PlayerStateSettings:
       Health: 100
       MoveSpeed: 5
